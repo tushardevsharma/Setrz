@@ -1,12 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
-<views:BaseContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:vm="clr-namespace:Setrz.Mobile.Features.Onboarding"
-             xmlns:views="using:Setrz.Mobile.Shared.Views"
-             x:Class="Setrz.Mobile.Features.Onboarding.StartingView"
-             x:DataType="vm:StartingViewModel">
-    <views:BaseContentPage.Content>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                       xmlns:vm="clr-namespace:Setrz.Mobile.Features.Onboarding"
+                       xmlns:views="using:Setrz.Mobile.Shared.Views"
+                       x:Class="Setrz.Mobile.Features.Onboarding.StartingView"
+                       x:DataType="vm:StartingViewModel">
+    <Grid>
+        <views:LoaderView/>
         <VerticalStackLayout Spacing="25" Padding="30" VerticalOptions="Center">
             <Border Stroke="LightGray"
                     StrokeThickness="1"
@@ -24,7 +25,7 @@
                        MaxLength="10"
                        Text="{Binding PhoneNumber, Mode=TwoWay}" />
             </Border>
-            
+
             <Button Text="Next"
                     CornerRadius="8"
                     HeightRequest="50"
@@ -35,8 +36,10 @@
                         <VisualStateGroup x:Name="CommonStates">
                             <VisualState x:Name="Disabled">
                                 <VisualState.Setters>
-                                    <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray950}, Dark={StaticResource Gray200}}" />
-                                    <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}" />
+                                    <Setter Property="TextColor"
+                                            Value="{AppThemeBinding Light={StaticResource Gray950}, Dark={StaticResource Gray200}}" />
+                                    <Setter Property="BackgroundColor"
+                                            Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}" />
                                 </VisualState.Setters>
                             </VisualState>
                             <VisualState x:Name="Normal">
@@ -47,30 +50,32 @@
                             </VisualState>
                             <VisualState x:Name="PointerOver">
                                 <VisualState.Setters>
-                                    <Setter Property="BackgroundColor" Value="{AppThemeBinding 
+                                    <Setter Property="BackgroundColor"
+                                            Value="{AppThemeBinding 
                                     Light={StaticResource Tertiary}, 
-                                    Dark={StaticResource SecondaryDarkText}}" /> 
+                                    Dark={StaticResource SecondaryDarkText}}" />
                                 </VisualState.Setters>
                             </VisualState>
                             <VisualState x:Name="Pressed">
                                 <VisualState.Setters>
-                                    <Setter Property="BackgroundColor" Value="{AppThemeBinding 
+                                    <Setter Property="BackgroundColor"
+                                            Value="{AppThemeBinding 
                                     Light={StaticResource Tertiary}, 
                                     Dark={StaticResource Primary}}" />
-                                    <Setter Property="Scale" Value="0.98" /> 
+                                    <Setter Property="Scale" Value="0.98" />
                                 </VisualState.Setters>
                             </VisualState>
                         </VisualStateGroup>
                     </VisualStateGroupList>
                 </VisualStateManager.VisualStateGroups>
-                
+
             </Button>
-            
+
             <Label Text="or login with"
                    HorizontalOptions="Center"
                    TextColor="Gray"
                    Margin="0, 10, 0, 5" />
-            
+
             <Grid ColumnDefinitions="*, Auto, Auto, *" HorizontalOptions="Center">
                 <Button Grid.Column="1"
                         Text="G"
@@ -81,7 +86,7 @@
                         CornerRadius="20"
                         Command="{Binding SocialLoginCommand}"
                         CommandParameter="Google" />
-                
+
                 <Button Grid.Column="2"
                         Text="f"
                         BackgroundColor="#1877F2"
@@ -95,5 +100,5 @@
             </Grid>
 
         </VerticalStackLayout>
-    </views:BaseContentPage.Content>
-</views:BaseContentPage>
+    </Grid>
+</ContentPage>
