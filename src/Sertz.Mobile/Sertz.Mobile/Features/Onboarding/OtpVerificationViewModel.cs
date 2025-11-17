@@ -33,13 +33,7 @@ public class OtpVerificationViewModel : BaseViewModel
     public string? OtpCode
     {
         get;
-        set
-        {
-            if (SetField(ref field, value))
-            {
-                VerifyOtpCommand.ChangeCanExecute();
-            }
-        }
+        set => SetField(ref field, value);
     }
     
     public Command VerifyOtpCommand { get; }
@@ -49,6 +43,7 @@ public class OtpVerificationViewModel : BaseViewModel
     {
         VerifyOtpCommand = new Command(VerifyOtpAsync, CanExecuteVerifyOtp);
         ResendOtpCommand = new Command(ResendOtpAsync);
+        RegisterCanExecuteChanged(nameof(OtpCode), VerifyOtpCommand);
     }
     
     private bool CanExecuteVerifyOtp()
@@ -63,6 +58,7 @@ public class OtpVerificationViewModel : BaseViewModel
         {
             await Shell.Current.DisplayAlertAsync("Success", "Verification successful! Proceeding to home page or registration page", "OK");
             // Successful verification -> Navigate to the next screen (QuotePage)
+            await Shell.Current.GoToAsync($"{nameof(StartingView)}");
         }
         else
         {
