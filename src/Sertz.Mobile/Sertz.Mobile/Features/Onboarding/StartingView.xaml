@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Sertz.Mobile.Features.Onboarding"
+             x:Class="Sertz.Mobile.Features.Onboarding.StartingView"
+             BindingContext="{vm:StartingViewModel}"
+             x:DataType="vm:StartingViewModel">
+    <ContentPage.Content>
+        <VerticalStackLayout Spacing="25" Padding="30" VerticalOptions="Center">
+            <Border Stroke="LightGray"
+                    StrokeThickness="1"
+                    Padding="0"
+                    Margin="0, 0, 0, 25">
+
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="8" />
+                </Border.StrokeShape>
+
+                <Entry Placeholder="Phone Number"
+                       Keyboard="Numeric"
+                       Margin="15,0"
+                       FontSize="18"
+                       MaxLength="10"
+                       Text="{Binding PhoneNumber, Mode=TwoWay}" />
+            </Border>
+            
+            <Button Text="Next"
+                    TextColor="White"
+                    BackgroundColor="#FF5722"
+                    CornerRadius="8"
+                    HeightRequest="50"
+                    Margin="0, 10"
+                    Command="{Binding OnNextCommand}">
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Disabled">
+                                <VisualState.Setters>
+                                    <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray950}, Dark={StaticResource Gray200}}" />
+                                    <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}" />
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter Property="TextColor" Value="White" />
+                                    <Setter Property="BackgroundColor" Value="#FF5722" />
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="PointerOver">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="{AppThemeBinding 
+                                    Light={StaticResource Tertiary}, 
+                                    Dark={StaticResource SecondaryDarkText}}" /> 
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="Pressed">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="{AppThemeBinding 
+                                    Light={StaticResource Tertiary}, 
+                                    Dark={StaticResource Primary}}" />
+                                    <Setter Property="Scale" Value="0.98" /> 
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </VisualStateManager.VisualStateGroups>
+                
+            </Button>
+            
+            <Label Text="or login with"
+                   HorizontalOptions="Center"
+                   TextColor="Gray"
+                   Margin="0, 10, 0, 5" />
+            
+            <Grid ColumnDefinitions="*, Auto, Auto, *" HorizontalOptions="Center">
+                <Button Grid.Column="1"
+                        Text="G"
+                        BackgroundColor="#4285F4"
+                        TextColor="White"
+                        WidthRequest="40"
+                        HeightRequest="40"
+                        CornerRadius="20"
+                        Command="{Binding SocialLoginCommand}"
+                        CommandParameter="Google" />
+                
+                <Button Grid.Column="2"
+                        Text="f"
+                        BackgroundColor="#1877F2"
+                        TextColor="White"
+                        WidthRequest="40"
+                        HeightRequest="40"
+                        CornerRadius="20"
+                        Margin="15, 0, 0, 0"
+                        Command="{Binding SocialLoginCommand}"
+                        CommandParameter="Facebook" />
+            </Grid>
+
+        </VerticalStackLayout>
+    </ContentPage.Content>
+</ContentPage>

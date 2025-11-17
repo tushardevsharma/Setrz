@@ -3,12 +3,11 @@
     x:Class="Sertz.Mobile.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:Sertz.Mobile"
-    Title="Sertz.Mobile">
+    xmlns:onboarding="clr-namespace:Sertz.Mobile.Features.Onboarding"
+    Title="Sertz">
 
     <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
+        ContentTemplate="{DataTemplate onboarding:StartingView}"
         Route="MainPage" />
 
 </Shell>
