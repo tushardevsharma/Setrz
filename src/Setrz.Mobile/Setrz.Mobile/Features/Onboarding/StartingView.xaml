@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+<views:BaseContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:Setrz.Mobile.Features.Onboarding"
+             xmlns:views="using:Setrz.Mobile.Shared.Views"
              x:Class="Setrz.Mobile.Features.Onboarding.StartingView"
-             BindingContext="{vm:StartingViewModel}"
              x:DataType="vm:StartingViewModel">
-    <ContentPage.Content>
+    <views:BaseContentPage.Content>
         <VerticalStackLayout Spacing="25" Padding="30" VerticalOptions="Center">
             <Border Stroke="LightGray"
                     StrokeThickness="1"
@@ -95,5 +95,5 @@
             </Grid>
 
         </VerticalStackLayout>
-    </ContentPage.Content>
-</ContentPage>
+    </views:BaseContentPage.Content>
+</views:BaseContentPage>

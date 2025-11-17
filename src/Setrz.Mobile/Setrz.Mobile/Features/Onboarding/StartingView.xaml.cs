@@ -1,9 +1,12 @@
-﻿namespace Setrz.Mobile.Features.Onboarding;
+﻿using Setrz.Mobile.Shared.Views;
 
-public partial class StartingView : ContentPage
+namespace Setrz.Mobile.Features.Onboarding;
+
+public partial class StartingView : BaseContentPage
 {
-    public StartingView()
+    public StartingView(StartingViewModel viewModel)
     {
         InitializeComponent();
+        BindingContext = viewModel;
     }
 }

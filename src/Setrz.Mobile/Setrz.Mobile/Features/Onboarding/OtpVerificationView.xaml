@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:Setrz.Mobile.Features.Onboarding"
              x:Class="Setrz.Mobile.Features.Onboarding.OtpVerificationView"
-             BindingContext="{vm:OtpVerificationViewModel}"
              x:DataType="{vm:OtpVerificationViewModel}">
     
     <VerticalStackLayout Spacing="25" Padding="30" VerticalOptions="Center">

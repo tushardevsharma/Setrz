@@ -5,9 +5,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:onboarding="clr-namespace:Setrz.Mobile.Features.Onboarding"
     Title="Setrz">
-
+    
     <ShellContent
         ContentTemplate="{DataTemplate onboarding:StartingView}"
-        Route="MainPage" />
+        Route="MainPage" >
+    </ShellContent>
 
 </Shell>

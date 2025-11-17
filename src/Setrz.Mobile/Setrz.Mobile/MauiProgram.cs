@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
+using Setrz.Mobile.Features.Onboarding;
+using Setrz.Mobile.Shared.Services;
 
 namespace Setrz.Mobile;
 
@@ -7,6 +9,12 @@ public static class MauiProgram
     public static MauiApp CreateMauiApp()
     {
         var builder = MauiApp.CreateBuilder();
+        
+        builder
+            .Services
+            .AddFoundationalServices()
+            .AddViewModels();
+        
         builder
             .UseMauiApp<App>()
             .ConfigureFonts(fonts =>
