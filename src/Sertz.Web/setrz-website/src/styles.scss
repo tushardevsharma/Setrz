@@ -1,11 +1,51 @@
 /* You can add global styles to this file, and also import other style files */
 
+:root {
+  /* Custom Primary Color (New Teal Green: #5A9690) */
+  --bs-primary: #5A9690;
+  --bs-primary-rgb: 90, 150, 144;
+
+  /* Custom Secondary Color (Light Grey/Blue) - kept the same */
+  --bs-secondary: #6c757d;
+  --bs-secondary-rgb: 108, 117, 125;
+
+  /* Override the 'Body' text color */
+  --bs-body-color: #333333;
+
+  /* Theming Step 2: Explicitly override the button-specific variables (Normal, Hover, Active states). */
+  .btn-primary {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: var(--bs-primary);
+    --bs-btn-border-color: var(--bs-primary);
+
+    /* Use a slightly darker shade for hover/active feedback */
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #4C857F;
+    /* Darker New Green */
+    --bs-btn-hover-border-color: #4C857F;
+
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #4C857F;
+    --bs-btn-active-border-color: #4C857F;
+
+    /* --- The Disabled Fix --- */
+    /* Lighter shade for the disabled look */
+    --bs-btn-disabled-bg: #6EB3AC;
+    /* Lighter New Green for Disabled */
+    --bs-btn-disabled-border-color: #6EB3AC;
+  }
+}
+
+
+
 [data-bs-theme="dark"] {
   --bs-body-bg: #432323;
   --bs-body-color: #E0D9D9;
   --bs-primary: #5A9690;
   --bs-light: #2F5755;
   --bs-dark: #432323;
+
+
 
   .problem-section,
   .how-it-works-section,
