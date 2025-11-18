@@ -1,0 +1,22 @@
+// 1. Import Bootstrap functions and default variables first
+// This allows you to access Bootstrap's color-related functions and default values
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+
+// 2. Overrides: Define your new primary color here
+// Example: Changing the brand color to a deep purple
+$primary: #6c5ce7; 
+$secondary: #8b8888; // Optionally change secondary color too
+
+// You can override any other variable here, like success, warning, etc.
+$success: #00b894; 
+
+// 3. Create a map for theme colors (optional but good practice)
+$theme-colors: map-merge($theme-colors, (
+    "primary": $primary,
+    "secondary": $secondary,
+    "success": $success
+));
+
+// 4. Import the rest of Bootstrap
+@import "~bootstrap/scss/bootstrap";
