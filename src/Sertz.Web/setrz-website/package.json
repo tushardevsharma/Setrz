@@ -7,8 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "prod-gh-build": "ng build --configuration production --base-href https://tushardevsharma.github.io/Setrz/",
-    "github-deploy": "npx angular-cli-ghpages --dir=dist/setrz-website/browser --no-silent"
+    "gh-deploy": "ng build --configuration production --base-href https://tushardevsharma.github.io/Setrz/ && npx angular-cli-ghpages --dir=dist/setrz-website/browser --no-silent"
   },
   "prettier": {
     "printWidth": 100,
