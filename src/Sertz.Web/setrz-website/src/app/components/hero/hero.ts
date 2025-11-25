@@ -16,6 +16,7 @@ export class Hero implements OnInit, AfterViewInit, OnDestroy { // Implement OnD
   private textArray: string[] = [
     "The new standard in moving.",
     "Seamless, stress-free relocation.",
+    "Powered by AI, designed for your peace of mind.",
     "Your personal home settling partners."
   ];
   private textArrayIndex: number = 0;

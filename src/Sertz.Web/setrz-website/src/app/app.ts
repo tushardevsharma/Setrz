@@ -9,6 +9,7 @@ import { Guarantee } from './components/guarantee/guarantee';
 import { LeadForm } from './components/lead-form/lead-form';
 import { Footer } from './components/footer/footer';
 import { ScrollAnimationDirective } from './directives/scroll-animation.directive';
+import { TechJourney } from './tech-journey/tech-journey'; // Import TechJourney
 
 @Component({
   selector: 'app-root',
@@ -24,6 +25,7 @@ import { ScrollAnimationDirective } from './directives/scroll-animation.directiv
     LeadForm,
     Footer,
     ScrollAnimationDirective,
+    TechJourney, // Add TechJourney here
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss'
