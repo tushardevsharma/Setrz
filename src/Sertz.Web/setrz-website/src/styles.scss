@@ -30,7 +30,16 @@
 
 body {
   font-family: 'Poppins', sans-serif;
-}.scroll-animation {
+}
+html {
+  scroll-behavior: smooth;
+}
+
+#lead-form {
+  scroll-margin-top: 4rem; /* Adjust based on your fixed header's height */
+}
+
+.scroll-animation {
   opacity: 0;
   transform: translate3d(0, 200px, 0); /* Using translate3d for potentially better performance/rendering */
   transition: opacity 2s ease-out, transform 2s ease-out;
