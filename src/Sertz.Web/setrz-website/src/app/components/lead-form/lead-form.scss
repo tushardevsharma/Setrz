@@ -1,3 +1,18 @@
 .lead-form-section {
-  background-color: #f8f9fa;
+  background-color: var(--bs-secondary);
+  color: #fff;
+
+  .form-control {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+  }
+
+  h2, p {
+    color: #fff;
+  }
 }

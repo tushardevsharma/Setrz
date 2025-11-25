@@ -1,11 +1,9 @@
-.card {
-  border: none;
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+.services-section {
+  background-color: #ffffff;
 }
 
-.card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 1rem 3rem rgba(0,0,0,.175);
+.card {
+  border: 1px solid #eee;
 }
 
 .card-img-top {

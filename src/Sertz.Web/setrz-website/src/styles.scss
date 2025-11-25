@@ -1,74 +1,43 @@
 /* You can add global styles to this file, and also import other style files */
 
 :root {
-  /* Custom Primary Color (New Teal Green: #5A9690) */
-  --bs-primary: #5A9690;
-  --bs-primary-rgb: 90, 150, 144;
+  --bs-primary: #FF6300;
+  --bs-primary-rgb: 255, 99, 0;
 
-  /* Custom Secondary Color (Light Grey/Blue) - kept the same */
-  --bs-secondary: #6c757d;
-  --bs-secondary-rgb: 108, 117, 125;
+  --bs-secondary: #5C88DA;
+  --bs-secondary-rgb: 92, 136, 218;
 
-  /* Override the 'Body' text color */
   --bs-body-color: #333333;
+  --bs-body-bg: #ffffff;
 
-  /* Theming Step 2: Explicitly override the button-specific variables (Normal, Hover, Active states). */
   .btn-primary {
     --bs-btn-color: #fff;
     --bs-btn-bg: var(--bs-primary);
     --bs-btn-border-color: var(--bs-primary);
 
-    /* Use a slightly darker shade for hover/active feedback */
     --bs-btn-hover-color: #fff;
-    --bs-btn-hover-bg: #4C857F;
-    /* Darker New Green */
-    --bs-btn-hover-border-color: #4C857F;
+    --bs-btn-hover-bg: #E65A00;
+    --bs-btn-hover-border-color: #E65A00;
 
     --bs-btn-active-color: #fff;
-    --bs-btn-active-bg: #4C857F;
-    --bs-btn-active-border-color: #4C857F;
+    --bs-btn-active-bg: #CC5200;
+    --bs-btn-active-border-color: #CC5200;
 
-    /* --- The Disabled Fix --- */
-    /* Lighter shade for the disabled look */
-    --bs-btn-disabled-bg: #6EB3AC;
-    /* Lighter New Green for Disabled */
-    --bs-btn-disabled-border-color: #6EB3AC;
+    --bs-btn-disabled-bg: #FF944D;
+    --bs-btn-disabled-border-color: #FF944D;
   }
 }
 
+body {
+  font-family: 'Poppins', sans-serif;
+}.scroll-animation {
+  opacity: 0;
+  transform: translate3d(0, 200px, 0); /* Using translate3d for potentially better performance/rendering */
+  transition: opacity 2s ease-out, transform 2s ease-out;
+  display: block; /* Ensure the element is treated as a block for correct transform application */
+}
 
-
-[data-bs-theme="dark"] {
-  --bs-body-bg: #432323;
-  --bs-body-color: #E0D9D9;
-  --bs-primary: #5A9690;
-  --bs-light: #2F5755;
-  --bs-dark: #432323;
-
-
-
-  .problem-section,
-  .how-it-works-section,
-  .lead-form-section {
-    background-color: #2F5755;
-  }
-
-  .navbar-scrolled {
-    background-color: #432323;
-  }
-
-  .card {
-    background-color: #2F5755;
-    border: 1px solid #5A9690;
-  }
-
-  .footer-section {
-    background-color: #2F5755 !important;
-  }
-
-  .hero-section {
-    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=1200&auto=format&fit=crop');
-    background-size: cover;
-    background-position: center;
-  }
+.scroll-animation.in-view {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
 }

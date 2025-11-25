@@ -1,8 +1,22 @@
 .navbar {
   transition: background-color 0.3s ease-in-out;
+
+  .nav-link, .navbar-brand {
+    color: #fff;
+  }
+
+  .btn-primary {
+    border-radius: 50rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
 }
 
 .navbar-scrolled {
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0,0,0,.1);
+
+  .nav-link, .navbar-brand {
+    color: #333;
+  }
 }

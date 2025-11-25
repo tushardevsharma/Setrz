@@ -1,7 +1,13 @@
-.footer-section a {
-  transition: opacity 0.3s ease-in-out;
-}
+.footer-section {
+  background-color: #222;
+  color: #fff;
 
-.footer-section a:hover {
-  opacity: 0.8;
+  a {
+    color: #fff;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  a:hover {
+    opacity: 0.8;
+  }
 }

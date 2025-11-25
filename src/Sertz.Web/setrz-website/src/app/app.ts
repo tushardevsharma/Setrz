@@ -8,6 +8,7 @@ import { Services } from './components/services/services';
 import { Guarantee } from './components/guarantee/guarantee';
 import { LeadForm } from './components/lead-form/lead-form';
 import { Footer } from './components/footer/footer';
+import { ScrollAnimationDirective } from './directives/scroll-animation.directive';
 
 @Component({
   selector: 'app-root',
@@ -22,6 +23,7 @@ import { Footer } from './components/footer/footer';
     Guarantee,
     LeadForm,
     Footer,
+    ScrollAnimationDirective,
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss'
