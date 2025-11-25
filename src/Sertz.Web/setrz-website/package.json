@@ -4,10 +4,11 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --base-href=/Setrz/ --output-path=dist/setrz-website",
+    "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "deploy": "gh-pages -d dist/setrz-website"
+    "prod-gh-build": "ng build --configuration production --base-href https://tushardevsharma.github.io/Setrz/",
+    "github-deploy": "npx angular-cli-ghpages --dir=dist/setrz-website/browser --no-silent"
   },
   "prettier": {
     "printWidth": 100,
