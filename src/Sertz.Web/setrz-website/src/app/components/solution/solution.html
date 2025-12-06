@@ -6,43 +6,32 @@
       </div>
     </div>
 
-    <!-- Feature 1: One Point of Contact (Image Left) -->
-    <div class="row align-items-center mb-5">
-      <div class="col-lg-6">
-        <img src="https://plus.unsplash.com/premium_photo-1664910191363-d552d678aade?q=80&w=1200&auto=format&fit=auto" alt="One Point of Contact" class="img-fluid rounded shadow">
-      </div>
-      <div class="col-lg-6">
-        <h3 class="h4 mt-3 mt-lg-0">
-          <i class="bi bi-headset me-2 text-secondary"></i> One Point of Contact
-        </h3>
-        <p class="text-muted">We coordinate everything, so you don't have to. Your dedicated move consultant is with you every step of the way.</p>
-      </div>
-    </div>
-
-    <!-- Feature 2: Vetted, Professional Crew (Image Right) -->
-    <div class="row align-items-center mb-5">
-      <div class="col-lg-6 order-lg-2">
-        <img src="https://images.unsplash.com/photo-1552581234-26160f608093?q=80&w=1200&auto=format&fit=crop" alt="Vetted, Professional Crew" class="img-fluid rounded shadow">
-      </div>
-      <div class="col-lg-6 order-lg-1">
-        <h3 class="h4 mt-3 mt-lg-0">
-          <i class="bi bi-people-fill me-2 text-secondary"></i> Vetted, Professional Crew
-        </h3>
-        <p class="text-muted">Our partners are an extension of our team, trained to our high standards of care and professionalism.</p>
+    <div class="solution-features-container">
+      <div *ngFor="let feature of features; let i = index"
+           class="solution-feature-card"
+           [class.active]="i === currentIndex"
+           [class.leaving]="isLeaving(i)">
+        <div class="row g-0 h-100 overflow-hidden"> <!-- Use row and g-0 for no gutter, h-100 for full height -->
+          <div class="col-md-6 d-flex align-items-center justify-content-center p-0" [class.order-md-2]="feature.imageRight"> <!-- Image on left -->
+            <img [src]="feature.image" [alt]="feature.title" class="card-img-left">
+          </div>
+          <div class="col-md-6 d-flex flex-column justify-content-center p-4" [class.order-md-1]="feature.imageRight"> <!-- Text on right -->
+            <h3 class="h4 mt-3 mt-lg-0">
+              <i [class]="feature.icon"></i> {{ feature.title }}
+            </h3>
+            <p class="text-muted">{{ feature.description }}</p>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Feature 3: Transparent Pricing (Image Left) -->
-    <div class="row align-items-center">
-      <div class="col-lg-6">
-        <img src="https://images.unsplash.com/photo-1564669722947-c89159202d19?q=80&w=1200&auto=format&fit=crop" alt="Transparent Pricing" class="img-fluid rounded shadow">
-      </div>
-      <div class="col-lg-6">
-        <h3 class="h4 mt-3 mt-lg-0">
-          <i class="bi bi-cash-stack me-2 text-secondary"></i> Transparent Pricing
-        </h3>
-        <p class="text-muted">The price we quote is the price you pay. No surprises, no hidden fees. Ever.</p>
-      </div>
+    <div class="carousel-navigation-controls mt-4 d-flex justify-content-center gap-3">
+      <button class="btn btn-primary carousel-control-prev-btn" (click)="prevSlide()">
+        <i class="bi bi-arrow-left"></i> Previous
+      </button>
+      <button class="btn btn-primary carousel-control-next-btn" (click)="nextSlide()">
+        Next <i class="bi bi-arrow-right"></i>
+      </button>
     </div>
   </div>
 </section>

@@ -1,11 +1,75 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { CommonModule } from '@angular/common'; // Import CommonModule for *ngIf
 
 @Component({
   selector: 'app-solution',
-  imports: [],
+  standalone: true, // Mark as standalone
+  imports: [CommonModule], // Add CommonModule to imports
   templateUrl: './solution.html',
   styleUrl: './solution.scss',
 })
-export class Solution {
+export class Solution implements OnInit, OnDestroy {
+  currentIndex: number = 0;
+  previousIndex: number | null = null; // Track the previously active index
+  intervalId: any;
 
+  features = [
+    {
+      image: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=1200&auto=format&fit=auto',
+      icon: 'bi bi-headset me-2 text-secondary',
+      title: 'One Point of Contact',
+      description: 'We coordinate everything, so you don\'t have to. Your dedicated move consultant is with you every step of the way.'
+    },
+    {
+      image: 'https://images.unsplash.com/photo-1552581234-26160f608093?q=80&w=1200&auto=format&fit=crop',
+      icon: 'bi bi-people-fill me-2 text-secondary',
+      title: 'Vetted, Professional Crew',
+      description: 'Our partners are an extension of our team, trained to our high standards of care and professionalism.',
+      imageRight: true // Set to true for this card
+    },
+    {
+      image: 'https://images.unsplash.com/photo-1564669722947-c89159202d19?q=80&w=1200&auto=format&fit=crop',
+      icon: 'bi bi-cash-stack me-2 text-secondary',
+      title: 'Transparent Pricing',
+      description: 'The price we quote is the price you pay. No surprises, no hidden fees. Ever.'
+    }
+  ];
+
+  ngOnInit(): void {
+    this.startAutoSlide();
+  }
+
+  ngOnDestroy(): void {
+    this.stopAutoSlide();
+  }
+
+  startAutoSlide(): void {
+    if (!this.intervalId) { // Removed isScrollingManually check
+      this.intervalId = setInterval(() => {
+        this.nextSlide();
+      }, 3500); // Change slide every 5 seconds
+    }
+  }
+
+  stopAutoSlide(): void {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+      this.intervalId = null;
+    }
+  }
+
+  nextSlide(): void {
+    this.previousIndex = this.currentIndex; // Store current as previous
+    this.currentIndex = (this.currentIndex + 1) % this.features.length;
+  }
+
+  prevSlide(): void {
+    this.previousIndex = this.currentIndex; // Store current as previous
+    this.currentIndex = (this.currentIndex - 1 + this.features.length) % this.features.length;
+  }
+
+  isLeaving(index: number): boolean {
+    // A card is "leaving" if it was the previousIndex and is not the currentIndex
+    return index === this.previousIndex && index !== this.currentIndex;
+  }
 }
