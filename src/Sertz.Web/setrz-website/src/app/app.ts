@@ -9,7 +9,7 @@ import { Guarantee } from './components/guarantee/guarantee';
 import { LeadForm } from './components/lead-form/lead-form';
 import { Footer } from './components/footer/footer';
 import { ScrollAnimationDirective } from './directives/scroll-animation.directive';
-import { TechJourney } from './tech-journey/tech-journey'; // Import TechJourney
+import { TechJourney } from './components/tech-journey/tech-journey';
 
 @Component({
   selector: 'app-root',
