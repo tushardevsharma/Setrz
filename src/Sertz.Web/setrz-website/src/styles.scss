@@ -8,6 +8,7 @@
   --bs-secondary-rgb: 244, 233, 216;
 
   --bs-body-color: #333333;
+  --bs-body-color-rgb: 51, 51, 51;
   --bs-body-bg: #ffffff;
 
   .btn-primary {
@@ -49,4 +50,16 @@ html {
 .scroll-animation.in-view {
   opacity: 1;
   transform: translate3d(0, 0, 0);
+}
+
+.themed-icon {
+  width: 50px; /* Adjust size as needed */
+  height: 50px; /* Adjust size as needed */
+  border-radius: 50%;
+  background-color: var(--bs-primary);
+  color: var(--bs-secondary);
+  display: inline-flex; /* Use inline-flex to keep it in line with text but allow flex properties */
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem; /* Adjust font size as needed */
 }

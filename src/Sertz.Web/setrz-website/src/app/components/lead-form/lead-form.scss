@@ -1,18 +1,18 @@
 .lead-form-section {
-  background-color: var(--bs-primary);
-  color: var(--bs-secondary);
+  background-color: var(--bs-body-bg); // Changed to white background
+  color: var(--bs-body-color); // Changed text color to dark grey
 
   .form-control {
-    background-color: rgba(var(--bs-secondary-rgb), 0.1);
-    border-color: rgba(var(--bs-secondary-rgb), 0.2);
-    color: var(--bs-secondary);
+    background-color: rgba(var(--bs-body-color-rgb), 0.05); // Light transparent dark grey
+    border-color: rgba(var(--bs-body-color-rgb), 0.1); // Light transparent dark grey
+    color: var(--bs-body-color); // Dark grey text
 
     &::placeholder {
-      color: rgba(var(--bs-secondary-rgb), 0.7);
+      color: rgba(var(--bs-body-color-rgb), 0.5); // Muted dark grey placeholder
     }
   }
 
   h2, p {
-    color: var(--bs-secondary);
+    color: var(--bs-body-color); // Dark grey text
   }
 }
