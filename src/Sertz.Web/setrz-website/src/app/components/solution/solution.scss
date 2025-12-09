@@ -117,21 +117,3 @@
 .solution-section .text-secondary {
   color: var(--bs-primary) !important; /* Bootstrap primary blue for icons */
 }
-
-.carousel-indicators {
-  .carousel-indicator-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background-color: rgba(var(--bs-primary-rgb), 0.5); // Semi-transparent primary color
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    padding: 0; /* Remove default padding */
-    line-height: 1; /* Ensure line-height doesn't affect height */
-
-    &.active {
-      background-color: var(--bs-primary); // Solid primary color when active
-    }
-  }
-}

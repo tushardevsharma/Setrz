@@ -1,8 +1,94 @@
 .services-section {
+  padding: 6rem 0;
   background-color: var(--bs-body-bg);
 }
 
-.card-img-top {
-  height: 200px;
+.services-carousel-container {
+  position: relative;
+  width: 100%;
+  height: 500px; /* Fixed height for the carousel container */
+  overflow: hidden;
+  padding-top: 0;
+  background-color: var(--bs-body-bg);
+}
+
+.service-carousel-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  margin-bottom: 1.5rem;
+  transform: translateX(100%);
+  transition: transform 0.8s ease-in-out, transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  overflow: hidden;
+  border-radius: 1rem;
+  background-color: var(--bs-body-bg);
+  z-index: 0;
+}
+
+.service-carousel-card.active {
+  transform: translateX(0);
+  z-index: 2;
+  background-color: var(--bs-body-bg);
+}
+
+.service-carousel-card.leaving {
+  transform: translateX(-100%);
+  z-index: 1;
+  background-color: var(--bs-body-bg);
+}
+
+.service-carousel-card .card-img-left {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
+  display: block;
+  background-color: var(--bs-body-bg);
+}
+
+.service-carousel-card .col-md-6 {
+  background-color: var(--bs-body-bg);
+}
+
+.service-carousel-card h3 {
+  margin-top: 0 !important;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--bs-body-color);
+}
+
+.service-carousel-card p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #6c757d;
+}
+
+@media (max-width: 767.98px) { /* Bootstrap's 'md' breakpoint */
+
+  .service-carousel-card {
+    overflow: visible; /* Allow content to be visible */
+  }
+
+  .service-carousel-card .row {
+    flex-direction: column; /* Stack image and text vertically on mobile */
+  }
+
+  .service-carousel-card .col-md-6:nth-child(1) { /* Target the first col-md-6 (image) */
+    order: 1;
+  }
+
+  .service-carousel-card .col-md-6:nth-child(2) { /* Target the second col-md-6 (text) */
+    order: 2;
+  }
+
+  .service-carousel-card .col-md-6 {
+    width: 100%; /* Take full width on mobile */
+    padding: 1rem; /* Adjust padding for mobile */
+  }
+
+  .service-carousel-card .card-img-left {
+    height: 250px; /* Fixed height for image on mobile */
+    object-fit: cover;
+  }
 }

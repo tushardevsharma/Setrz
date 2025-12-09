@@ -6,61 +6,32 @@
         <p class="lead text-muted">We offer a comprehensive suite of services to make your new house a home, instantly.</p>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-4 mb-4">
-        <div class="card h-100 text-center p-4">
-          <img src="https://images.unsplash.com/photo-1624137308591-43f03e6d64c3?q=80&w=800&auto=format&fit=crop" class="card-img-top" alt="Packing and Moving">
-          <div class="card-body">
-            <h5 class="card-title">Expert Packing & Moving</h5>
-            <p class="card-text">From fragile items to bulky furniture, we pack and transport everything with the utmost care.</p>
+    <div #carouselContainer class="services-carousel-container">
+      <div #carouselCard *ngFor="let service of services; let i = index"
+           class="service-carousel-card"
+           [class.active]="i === currentIndex"
+           [class.leaving]="isLeaving(i)">
+        <div class="row g-0 h-100 overflow-hidden">
+          <div class="col-md-6 d-flex align-items-center justify-content-center p-0" [class.order-md-2]="i % 2 !== 0">
+            <img [src]="service.image" [alt]="service.title" class="card-img-left">
+          </div>
+          <div class="col-md-6 d-flex flex-column justify-content-center p-4" [class.order-md-1]="i % 2 !== 0">
+            <h3 class="h4 mt-3 mt-lg-0">
+              {{ service.title }}
+            </h3>
+            <p class="text-muted">{{ service.description }}</p>
           </div>
         </div>
       </div>
-      <div class="col-md-4 mb-4">
-        <div class="card h-100 text-center p-4">
-          <img src="https://images.unsplash.com/photo-1487015307662-6ce6210680f1?q=80&w=800&auto=format&fit=crop" class="card-img-top" alt="Furniture Assembly">
-          <div class="card-body">
-            <h5 class="card-title">Furniture Assembly</h5>
-            <p class="card-text">Beds, tables, shelves - we assemble all your furniture so you don't have to lift a finger.</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4 mb-4">
-        <div class="card h-100 text-center p-4">
-          <img src="https://images.unsplash.com/photo-1484154218962-a197022b5858?q=80&w=800&auto=format&fit=crop" class="card-img-top" alt="Appliance Installation">
-          <div class="card-body">
-            <h5 class="card-title">Appliance Installation</h5>
-            <p class="card-text">We'll install your TV, washing machine, fridge, and other appliances so they're ready to use.</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4 mb-4">
-        <div class="card h-100 text-center p-4">
-          <img src="https://images.unsplash.com/photo-1556911220-bff31c812dba?q=80&w=800&auto=format&fit=crop" class="card-img-top" alt="Kitchen Setup">
-          <div class="card-body">
-            <h5 class="card-title">Kitchen Setup</h5>
-            <p class="card-text">We'll unpack and organize your kitchen, so you can cook your first meal without the hassle.</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4 mb-4">
-        <div class="card h-100 text-center p-4">
-          <img src="https://images.unsplash.com/photo-1687953413905-731f620177ae?q=80&w=800&auto=format&fit=fill" class="card-img-top" alt="Wardrobe Organization">
-          <div class="card-body">
-            <h5 class="card-title">Wardrobe Organization</h5>
-            <p class="card-text">Your clothes are unpacked and arranged in your closets, making you feel right at home.</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4 mb-4">
-        <div class="card h-100 text-center p-4">
-          <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=800&auto=format&fit=crop" class="card-img-top" alt="Final Touches">
-          <div class="card-body">
-            <h5 class="card-title">The Final Touches</h5>
-            <p class="card-text">We can help with small decor, hanging pictures, and making the space truly yours.</p>
-          </div>
-        </div>
-      </div>
+    </div>
+
+    <div class="carousel-indicators mt-4 d-flex justify-content-center gap-2">
+      <button *ngFor="let service of services; let i = index"
+              type="button"
+              [class.active]="i === currentIndex"
+              (click)="goToSlide(i)"
+              aria-label="Slide {{ i + 1 }}"
+              class="carousel-indicator-dot"></button>
     </div>
   </div>
 </section>

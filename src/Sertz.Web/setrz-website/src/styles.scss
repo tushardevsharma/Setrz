@@ -73,3 +73,21 @@ html {
   transform: translateY(-10px) scale(1.02);
   box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175);
 }
+
+.carousel-indicators {
+  .carousel-indicator-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: rgba(var(--bs-primary-rgb), 0.5); // Semi-transparent primary color
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    padding: 0; /* Remove default padding */
+    line-height: 1; /* Ensure line-height doesn't affect height */
+
+    &.active {
+      background-color: var(--bs-primary); // Solid primary color when active
+    }
+  }
+}
