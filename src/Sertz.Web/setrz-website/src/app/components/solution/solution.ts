@@ -72,4 +72,14 @@ export class Solution implements OnInit, OnDestroy {
     // A card is "leaving" if it was the previousIndex and is not the currentIndex
     return index === this.previousIndex && index !== this.currentIndex;
   }
+
+  goToSlide(index: number): void {
+    if (index === this.currentIndex) {
+      return; // Do nothing if clicking on the current slide
+    }
+    this.previousIndex = this.currentIndex;
+    this.currentIndex = index;
+    this.stopAutoSlide(); // Stop auto-sliding when user interacts
+    this.startAutoSlide(); // Restart auto-sliding after a delay
+  }
 }

@@ -25,13 +25,13 @@
       </div>
     </div>
 
-    <div class="carousel-navigation-controls mt-4 d-flex justify-content-center gap-3">
-      <button class="btn btn-primary carousel-control-prev-btn" (click)="prevSlide()">
-        <i class="bi bi-arrow-left"></i> Previous
-      </button>
-      <button class="btn btn-primary carousel-control-next-btn" (click)="nextSlide()">
-        Next <i class="bi bi-arrow-right"></i>
-      </button>
+    <div class="carousel-indicators mt-4 d-flex justify-content-center gap-2">
+      <button *ngFor="let feature of features; let i = index"
+              type="button"
+              [class.active]="i === currentIndex"
+              (click)="goToSlide(i)"
+              aria-label="Slide {{ i + 1 }}"
+              class="carousel-indicator-dot"></button>
     </div>
   </div>
 </section>
