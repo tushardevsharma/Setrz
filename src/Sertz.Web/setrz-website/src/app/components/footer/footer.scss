@@ -1,9 +1,9 @@
 .footer-section {
-  background-color: #222;
-  color: #fff;
+  background-color: var(--bs-primary);
+  color: var(--bs-secondary);
 
   a {
-    color: #fff;
+    color: var(--bs-secondary);
     transition: opacity 0.3s ease-in-out;
   }
 

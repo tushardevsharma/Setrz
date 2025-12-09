@@ -1,8 +1,13 @@
 .navbar {
   transition: background-color 0.3s ease-in-out;
 
-  .nav-link, .navbar-brand {
-    color: #fff;
+  .nav-link {
+    color: var(--bs-secondary);
+  }
+
+  .navbar-logo {
+    height: 40px; /* Adjust as needed */
+    width: auto;
   }
 
   .btn-primary {
@@ -13,10 +18,10 @@
 }
 
 .navbar-scrolled {
-  background-color: #fff;
+  background-color: var(--bs-body-bg);
   box-shadow: 0 2px 4px rgba(0,0,0,.1);
 
-  .nav-link, .navbar-brand {
-    color: #333;
+  .nav-link {
+    color: var(--bs-body-color);
   }
 }

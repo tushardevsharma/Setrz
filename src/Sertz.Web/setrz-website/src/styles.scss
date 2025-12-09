@@ -1,11 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 
 :root {
-  --bs-primary: #FF6300;
-  --bs-primary-rgb: 255, 99, 0;
+  --bs-primary: #174D3B;
+  --bs-primary-rgb: 23, 77, 59;
 
-  --bs-secondary: #5C88DA;
-  --bs-secondary-rgb: 92, 136, 218;
+  --bs-secondary: #F4E9D8;
+  --bs-secondary-rgb: 244, 233, 216;
 
   --bs-body-color: #333333;
   --bs-body-bg: #ffffff;
@@ -16,15 +16,15 @@
     --bs-btn-border-color: var(--bs-primary);
 
     --bs-btn-hover-color: #fff;
-    --bs-btn-hover-bg: #E65A00;
-    --bs-btn-hover-border-color: #E65A00;
+    --bs-btn-hover-bg: #123A2D; /* Darker shade of green for hover */
+    --bs-btn-hover-border-color: #123A2D;
 
     --bs-btn-active-color: #fff;
-    --bs-btn-active-bg: #CC5200;
-    --bs-btn-active-border-color: #CC5200;
+    --bs-btn-active-bg: #0E2B21; /* Even darker shade for active */
+    --bs-btn-active-border-color: #0E2B21;
 
-    --bs-btn-disabled-bg: #FF944D;
-    --bs-btn-disabled-border-color: #FF944D;
+    --bs-btn-disabled-bg: #4D7A6B; /* Lighter shade for disabled */
+    --bs-btn-disabled-border-color: #4D7A6B;
   }
 }
 

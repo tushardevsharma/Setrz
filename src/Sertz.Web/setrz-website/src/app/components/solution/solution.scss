@@ -1,6 +1,6 @@
 .solution-section {
   padding: 6rem 0; /* Increased padding for more whitespace */
-  background-color: #ffffff;
+  background-color: var(--bs-body-bg);
 }
 
 .solution-features-container {
@@ -9,7 +9,7 @@
   height: 500px; /* Fixed height for the carousel container */
   overflow: hidden; /* Hide cards outside the view */
   padding-top: 0; /* Revert padding-top */
-  background-color: #ffffff;
+  background-color: var(--bs-body-bg);
 }
 
 /* Navigation Controls */
@@ -21,7 +21,7 @@
 .carousel-control-next-btn {
   background-color: var(--bs-primary); /* Use Bootstrap primary color */
   border-color: var(--bs-primary);
-  color: white;
+  color: var(--bs-secondary);
   font-weight: 600;
   padding: 0.75rem 1.5rem;
   border-radius: 0.5rem;
@@ -30,8 +30,8 @@
 
 .carousel-control-prev-btn:hover,
 .carousel-control-next-btn:hover {
-  background-color: #0056b3; /* A darker shade of Bootstrap primary blue */
-  border-color: #0056b3;
+  background-color: #123A2D; /* A darker shade of primary for hover */
+  border-color: #123A2D;
   transform: translateY(-2px);
 }
 
@@ -52,20 +52,20 @@
   transition: transform 0.8s ease-in-out, transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Add transition for hover */
   overflow: hidden; /* Ensure content within card is clipped */
   border-radius: 1rem; /* Slightly rounded corners */
-  background-color: #fff;
+  background-color: var(--bs-body-bg);
   z-index: 0; /* Default z-index for inactive cards */
 }
 
 .solution-feature-card.active {
   transform: translateX(0); /* Active card is in view */
   z-index: 2; /* Active card is on top */
-  background-color: #fff;
+  background-color: var(--bs-body-bg);
 }
 
 .solution-feature-card.leaving {
   transform: translateX(-100%); /* Leaving card slides out to the left */
   z-index: 1; /* Leaving card slides underneath active, but over other inactive */
-  background-color: #fff;
+  background-color: var(--bs-body-bg);
 }
 
 .solution-feature-card .card-img-left {
@@ -73,18 +73,18 @@
   height: 100%;
   object-fit: cover; /* Cover the area without distortion */
   display: block; /* Remove any potential extra space below the image */
-  background-color: #fff;
+  background-color: var(--bs-body-bg);
 }
 
 .solution-feature-card .col-md-6 {
-  background-color: #fff; /* Ensure columns inherit the card's background */
+  background-color: var(--bs-body-bg); /* Ensure columns inherit the card's background */
 }
 
 .solution-feature-card h3 {
   margin-top: 0 !important; /* Override Bootstrap's default margin-top */
   font-size: 1.75rem; /* Larger heading */
   font-weight: 700; /* Bolder heading */
-  color: #343a40; /* Darker heading */
+  color: var(--bs-body-color); /* Darker heading */
 }
 
 .solution-feature-card p {
@@ -95,12 +95,12 @@
 
 .solution-section h2 {
   font-weight: 700;
-  color: #343a40; /* Darker heading for contrast */
+  color: var(--bs-body-color); /* Darker heading for contrast */
 }
 
 .solution-section h3 {
   font-weight: 600;
-  color: #495057; /* Slightly lighter heading */
+  color: var(--bs-body-color); /* Slightly lighter heading */
 }
 
 .solution-section p {
@@ -115,5 +115,5 @@
 }
 
 .solution-section .text-secondary {
-  color: #007bff !important; /* Bootstrap primary blue for icons */
+  color: var(--bs-primary) !important; /* Bootstrap primary blue for icons */
 }

@@ -1,8 +1,11 @@
 <nav class="navbar navbar-expand-lg navbar-light fixed-top" [ngClass]="{'navbar-scrolled': isScrolled}">
   <div class="container">
-    <a class="navbar-brand text-light" 
+    <a class="navbar-brand" 
        href="#"
-       [ngClass]="{'text-light': !isScrolled, 'text-dark': isScrolled}">Zeeroni</a>
+       [ngClass]="{'text-light': !isScrolled, 'text-dark': isScrolled}">
+      <img src="/Logo.png" alt="Setrz Logo" class="navbar-logo me-2">
+      Zeeroni
+    </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>

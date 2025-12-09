@@ -1,18 +1,18 @@
 .lead-form-section {
-  background-color: var(--bs-secondary);
-  color: #fff;
+  background-color: var(--bs-primary);
+  color: var(--bs-secondary);
 
   .form-control {
-    background-color: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.2);
-    color: #fff;
+    background-color: rgba(var(--bs-secondary-rgb), 0.1);
+    border-color: rgba(var(--bs-secondary-rgb), 0.2);
+    color: var(--bs-secondary);
 
     &::placeholder {
-      color: rgba(255, 255, 255, 0.7);
+      color: rgba(var(--bs-secondary-rgb), 0.7);
     }
   }
 
   h2, p {
-    color: #fff;
+    color: var(--bs-secondary);
   }
 }
