@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common'; // Import CommonModule for *ngIf
+ // Import CommonModule for *ngIf
 
 @Component({
   selector: 'app-solution',
   standalone: true, // Mark as standalone
-  imports: [CommonModule], // Add CommonModule to imports
+  imports: [], // Add CommonModule to imports
   templateUrl: './solution.html',
   styleUrl: './solution.scss',
 })

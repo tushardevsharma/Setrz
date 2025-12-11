@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy, ElementRef, ViewChild, ViewChildren, QueryList, AfterViewInit, HostListener } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-services',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './services.html',
   styleUrl: './services.scss',
 })

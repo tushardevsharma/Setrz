@@ -1,10 +1,10 @@
 import { Component, OnInit, ElementRef, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common'; // Import CommonModule
+ // Import CommonModule
 
 @Component({
   selector: 'app-hero',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './hero.html',
   styleUrl: './hero.scss',
 })

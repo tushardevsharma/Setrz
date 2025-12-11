@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common'; // Import CommonModule
+ // Import CommonModule
 
 @Component({
   selector: 'app-tech-journey',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './tech-journey.html',
   styleUrl: './tech-journey.scss',
 })
