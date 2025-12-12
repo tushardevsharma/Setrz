@@ -14,6 +14,7 @@ export class Hero implements OnInit, AfterViewInit, OnDestroy { // Implement OnD
   @ViewChild('typedCursor') typedCursorRef!: ElementRef;
 
   private textArray: string[] = [
+    "Experience the future of relocation.",
     "The new standard in moving.",
     "Seamless, stress-free relocation.",
     "Powered by AI, designed for your peace of mind.",
