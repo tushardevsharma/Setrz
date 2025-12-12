@@ -15,6 +15,9 @@ export class Services implements OnInit, OnDestroy, AfterViewInit { // Implement
   currentIndex: number = 0;
   previousIndex: number | null = null;
   intervalId: any;
+  touchStartX: number = 0;
+  touchEndX: number = 0;
+  swipeThreshold: number = 50; // Minimum distance for a swipe to be registered
 
   services = [
     {
@@ -109,6 +112,28 @@ export class Services implements OnInit, OnDestroy, AfterViewInit { // Implement
 
   isLeaving(index: number): boolean {
     return index === this.previousIndex && index !== this.currentIndex;
+  }
+
+  onTouchStart(event: TouchEvent): void {
+    this.touchStartX = event.touches[0].clientX;
+    this.stopAutoSlide(); // Stop auto-slide on touch interaction
+  }
+
+  onTouchMove(event: TouchEvent): void {
+    this.touchEndX = event.touches[0].clientX;
+  }
+
+  onTouchEnd(event: TouchEvent): void {
+    const swipeDistance = this.touchStartX - this.touchEndX;
+
+    if (swipeDistance > this.swipeThreshold) {
+      // Swiped left
+      this.nextSlide();
+    } else if (swipeDistance < -this.swipeThreshold) {
+      // Swiped right
+      this.prevSlide();
+    }
+    this.startAutoSlide(); // Restart auto-slide after swipe
   }
 
   private adjustCarouselHeight(): void {

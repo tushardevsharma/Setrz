@@ -8,7 +8,12 @@
       </div>
     </div>
 
-    <div class="solution-features-container">
+    <div
+      class="solution-features-container"
+      (touchstart)="onTouchStart($event)"
+      (touchmove)="onTouchMove($event)"
+      (touchend)="onTouchEnd($event)"
+    >
       @for (feature of features; track feature; let i = $index) {
         <div
           class="solution-feature-card"

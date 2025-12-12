@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
- // Import CommonModule for *ngIf
+import { CommonModule } from '@angular/common'; // Import CommonModule for *ngIf
 
 @Component({
   selector: 'app-solution',
   standalone: true, // Mark as standalone
-  imports: [], // Add CommonModule to imports
+  imports: [CommonModule], // Add CommonModule to imports
   templateUrl: './solution.html',
   styleUrl: './solution.scss',
 })
@@ -12,6 +12,9 @@ export class Solution implements OnInit, OnDestroy {
   currentIndex: number = 0;
   previousIndex: number | null = null; // Track the previously active index
   intervalId: any;
+  touchStartX: number = 0;
+  touchEndX: number = 0;
+  swipeThreshold: number = 50; // Minimum distance for a swipe to be registered
 
   features = [
     {
@@ -36,6 +39,7 @@ export class Solution implements OnInit, OnDestroy {
   ];
 
   ngOnInit(): void {
+    // Initialize component and start auto-slide
     this.startAutoSlide();
   }
 
@@ -61,11 +65,15 @@ export class Solution implements OnInit, OnDestroy {
   nextSlide(): void {
     this.previousIndex = this.currentIndex; // Store current as previous
     this.currentIndex = (this.currentIndex + 1) % this.features.length;
+    this.stopAutoSlide(); // Stop auto-sliding when user interacts
+    this.startAutoSlide(); // Restart auto-sliding after a delay
   }
 
   prevSlide(): void {
     this.previousIndex = this.currentIndex; // Store current as previous
     this.currentIndex = (this.currentIndex - 1 + this.features.length) % this.features.length;
+    this.stopAutoSlide(); // Stop auto-sliding when user interacts
+    this.startAutoSlide(); // Restart auto-sliding after a delay
   }
 
   isLeaving(index: number): boolean {
@@ -81,5 +89,30 @@ export class Solution implements OnInit, OnDestroy {
     this.currentIndex = index;
     this.stopAutoSlide(); // Stop auto-sliding when user interacts
     this.startAutoSlide(); // Restart auto-sliding after a delay
+  }
+
+  onTouchStart(event: TouchEvent): void {
+    this.touchStartX = event.touches[0].clientX;
+    this.stopAutoSlide(); // Stop auto-slide on touch interaction
+  }
+
+  onTouchMove(event: TouchEvent): void {
+    // Prevent default scroll behavior only if a horizontal swipe is likely
+    // This can be tricky and might interfere with vertical scrolling.
+    // For now, let's just record the touchEndX.
+    this.touchEndX = event.touches[0].clientX;
+  }
+
+  onTouchEnd(event: TouchEvent): void {
+    const swipeDistance = this.touchStartX - this.touchEndX;
+
+    if (swipeDistance > this.swipeThreshold) {
+      // Swiped left
+      this.nextSlide();
+    } else if (swipeDistance < -this.swipeThreshold) {
+      // Swiped right
+      this.prevSlide();
+    }
+    this.startAutoSlide(); // Restart auto-slide after swipe
   }
 }
