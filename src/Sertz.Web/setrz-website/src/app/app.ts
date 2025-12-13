@@ -1,31 +1,15 @@
 import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { Header } from './components/header/header';
-import { Hero } from './components/hero/hero';
-import { Problem } from './components/problem/problem';
-import { Solution } from './components/solution/solution';
-import { HowItWorks } from './components/how-it-works/how-it-works';
-import { Services } from './components/services/services';
-import { Guarantee } from './components/guarantee/guarantee';
-import { LeadForm } from './components/lead-form/lead-form';
 import { Footer } from './components/footer/footer';
-import { ScrollAnimationDirective } from './directives/scroll-animation.directive';
-import { TechJourney } from './components/tech-journey/tech-journey';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
+    RouterOutlet,
     Header,
-    Hero,
-    Problem,
-    Solution,
-    HowItWorks,
-    Services,
-    Guarantee,
-    LeadForm,
-    Footer,
-    ScrollAnimationDirective,
-    TechJourney, // Add TechJourney here
+    Footer
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss'
