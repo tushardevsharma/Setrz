@@ -1,6 +1,7 @@
 import { Component, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { Router, RouterLink } from '@angular/router'; // Import Router
+import { ViewportScroller } from '@angular/common'; // Import ViewportScroller
 declare var bootstrap: any; // Declare bootstrap to avoid TypeScript errors
 
 @Component({
@@ -14,7 +15,7 @@ export class Header {
   isScrolled = false;
   @ViewChild('navbarCollapse') navbarCollapse!: ElementRef;
 
-  constructor(private router: Router) {} // Inject Router
+  constructor(private router: Router, private scroller: ViewportScroller) {} // Inject Router and ViewportScroller
 
   @HostListener('window:scroll', [])
   onWindowScroll() {
@@ -23,6 +24,12 @@ export class Header {
 
   navigateTo(path: string, fragment?: string) {
     this.router.navigate([path], { fragment: fragment }).then(() => {
+      if (fragment) {
+        // Use a timeout to ensure the element is rendered before attempting to scroll
+        setTimeout(() => {
+          this.scroller.scrollToAnchor(fragment);
+        }, 100); // Small delay
+      }
       this.closeNavbar(); // Close navbar after navigation
     });
   }
