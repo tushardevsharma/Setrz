@@ -18,6 +18,7 @@
     padding: 0.5rem 1rem; // Add padding to make them look like tabs
     border-bottom: 2px solid transparent; // Subtle border for tab effect
     transition: all 0.3s ease-in-out; // Smooth transition for hover and active states
+    cursor: pointer; // Ensure hand cursor on hover
 
     &:hover {
       border-color: var(--bs-secondary); // Highlight on hover
