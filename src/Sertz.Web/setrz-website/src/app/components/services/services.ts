@@ -1,23 +1,26 @@
 import { Component, OnInit, OnDestroy, ElementRef, ViewChild, ViewChildren, QueryList, AfterViewInit, HostListener } from '@angular/core';
+import { CarouselDirective } from '../../shared/directives/carousel.directive';
 
 
 @Component({
   selector: 'app-services',
   standalone: true,
-  imports: [],
+  imports: [CarouselDirective],
   templateUrl: './services.html',
   styleUrl: './services.scss',
 })
 export class Services implements OnInit, OnDestroy, AfterViewInit { // Implement AfterViewInit
   @ViewChild('carouselContainer') carouselContainer!: ElementRef;
   @ViewChildren('carouselCard') carouselCards!: QueryList<ElementRef>;
+  @ViewChild(CarouselDirective) carouselDirective!: CarouselDirective;
 
-  currentIndex: number = 0;
-  previousIndex: number | null = null;
-  intervalId: any;
-  touchStartX: number = 0;
-  touchEndX: number = 0;
-  swipeThreshold: number = 50; // Minimum distance for a swipe to be registered
+  // Removed duplicated carousel properties
+  // currentIndex: number = 0;
+  // previousIndex: number | null = null;
+  // intervalId: any;
+  // touchStartX: number = 0;
+  // touchEndX: number = 0;
+  // swipeThreshold: number = 50; // Minimum distance for a swipe to be registered
 
   services = [
     {
@@ -53,7 +56,7 @@ export class Services implements OnInit, OnDestroy, AfterViewInit { // Implement
   ];
 
   ngOnInit(): void {
-    this.startAutoSlide();
+    // this.startAutoSlide(); // Handled by directive
   }
 
   ngAfterViewInit(): void { // Implement AfterViewInit
@@ -61,10 +64,12 @@ export class Services implements OnInit, OnDestroy, AfterViewInit { // Implement
     this.adjustCarouselHeight();
     // Re-adjust height if cards change (e.g., dynamic content)
     this.carouselCards.changes.subscribe(() => this.adjustCarouselHeight());
+    // Subscribe to slide changes from the directive to adjust height
+    this.carouselDirective.slideChange.subscribe(() => this.adjustCarouselHeight());
   }
 
   ngOnDestroy(): void {
-    this.stopAutoSlide();
+    // this.stopAutoSlide(); // Handled by directive
   }
 
   @HostListener('window:resize', ['$event'])
@@ -72,74 +77,21 @@ export class Services implements OnInit, OnDestroy, AfterViewInit { // Implement
     this.adjustCarouselHeight();
   }
 
-  startAutoSlide(): void {
-    if (!this.intervalId) {
-      this.intervalId = setInterval(() => {
-        this.nextSlide();
-      }, 3500);
-    }
-  }
+  // Removed duplicated carousel methods
+  // startAutoSlide(): void { ... }
+  // stopAutoSlide(): void { ... }
+  // nextSlide(): void { ... }
+  // prevSlide(): void { ... }
+  // goToSlide(index: number): void { ... }
+  // isLeaving(index: number): boolean { ... }
+  // onTouchStart(event: TouchEvent): void { ... }
+  // onTouchMove(event: TouchEvent): void { ... }
+  // onTouchEnd(event: TouchEvent): void { ... }
 
-  stopAutoSlide(): void {
-    if (this.intervalId) {
-      clearInterval(this.intervalId);
-      this.intervalId = null;
-    }
-  }
-
-  nextSlide(): void {
-    this.previousIndex = this.currentIndex;
-    this.currentIndex = (this.currentIndex + 1) % this.services.length;
-    this.adjustCarouselHeight(); // Adjust height after slide change
-  }
-
-  prevSlide(): void {
-    this.previousIndex = this.currentIndex;
-    this.currentIndex = (this.currentIndex - 1 + this.services.length) % this.services.length;
-    this.adjustCarouselHeight(); // Adjust height after slide change
-  }
-
-  goToSlide(index: number): void {
-    if (index === this.currentIndex) {
-      return;
-    }
-    this.previousIndex = this.currentIndex;
-    this.currentIndex = index;
-    this.stopAutoSlide();
-    this.startAutoSlide();
-    this.adjustCarouselHeight(); // Adjust height after slide change
-  }
-
-  isLeaving(index: number): boolean {
-    return index === this.previousIndex && index !== this.currentIndex;
-  }
-
-  onTouchStart(event: TouchEvent): void {
-    this.touchStartX = event.touches[0].clientX;
-    this.stopAutoSlide(); // Stop auto-slide on touch interaction
-  }
-
-  onTouchMove(event: TouchEvent): void {
-    this.touchEndX = event.touches[0].clientX;
-  }
-
-  onTouchEnd(event: TouchEvent): void {
-    const swipeDistance = this.touchStartX - this.touchEndX;
-
-    if (swipeDistance > this.swipeThreshold) {
-      // Swiped left
-      this.nextSlide();
-    } else if (swipeDistance < -this.swipeThreshold) {
-      // Swiped right
-      this.prevSlide();
-    }
-    this.startAutoSlide(); // Restart auto-slide after swipe
-  }
-
-  private adjustCarouselHeight(): void {
+  public adjustCarouselHeight(): void {
     // Only adjust height on mobile (or smaller screens)
-    if (window.innerWidth < 768 && this.carouselContainer && this.carouselCards) {
-      const activeCardElement = this.carouselCards.toArray()[this.currentIndex]?.nativeElement;
+    if (window.innerWidth < 768 && this.carouselContainer && this.carouselCards && this.carouselDirective) {
+      const activeCardElement = this.carouselCards.toArray()[this.carouselDirective.currentIndex]?.nativeElement;
       if (activeCardElement) {
         // Set height of container to active card's scrollHeight to ensure all content is visible
         this.carouselContainer.nativeElement.style.height = `${activeCardElement.scrollHeight}px`;

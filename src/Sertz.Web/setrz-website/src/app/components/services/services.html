@@ -7,13 +7,10 @@
         </p>
       </div>
     </div>
-    <div #carouselContainer class="services-carousel-container"
-      (touchstart)="onTouchStart($event)"
-      (touchmove)="onTouchMove($event)"
-      (touchend)="onTouchEnd($event)">
+    <div #carouselContainer appCarousel [items]="services" (slideChange)="adjustCarouselHeight()" #carouselDir="appCarousel" class="services-carousel-container">
       @for (service of services; track service; let i = $index) {
         <div #carouselCard class="service-carousel-card"
-          [class.active]="i === currentIndex" [class.leaving]="isLeaving(i)">
+          [class.active]="i === carouselDir.currentIndex" [class.leaving]="carouselDir.isLeaving(i)">
           <div class="row g-0 h-100 overflow-hidden">
             <div class="col-md-6 d-flex align-items-center justify-content-center p-0" [class.order-md-2]="i % 2 !== 0">
               <img [src]="service.image" [alt]="service.title" class="card-img-left">
@@ -31,8 +28,8 @@
 
     <div class="carousel-indicators mt-4 d-flex justify-content-center gap-2">
       @for (service of services; track service; let i = $index) {
-        <button type="button" [class.active]="i === currentIndex"
-        (click)="goToSlide(i)" aria-label="Slide {{ i + 1 }}" class="carousel-indicator-dot"></button>
+        <button type="button" [class.active]="i === carouselDir.currentIndex"
+        (click)="carouselDir.goToSlide(i)" aria-label="Slide {{ i + 1 }}" class="carousel-indicator-dot"></button>
       }
     </div>
   </div>

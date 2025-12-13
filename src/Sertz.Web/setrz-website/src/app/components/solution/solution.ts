@@ -1,20 +1,22 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common'; // Import CommonModule for *ngIf
+import { CarouselDirective } from '../../shared/directives/carousel.directive';
 
 @Component({
   selector: 'app-solution',
   standalone: true, // Mark as standalone
-  imports: [CommonModule], // Add CommonModule to imports
+  imports: [CommonModule, CarouselDirective], // Add CommonModule to imports
   templateUrl: './solution.html',
   styleUrl: './solution.scss',
 })
 export class Solution implements OnInit, OnDestroy {
-  currentIndex: number = 0;
-  previousIndex: number | null = null; // Track the previously active index
-  intervalId: any;
-  touchStartX: number = 0;
-  touchEndX: number = 0;
-  swipeThreshold: number = 50; // Minimum distance for a swipe to be registered
+  // Removed duplicated carousel properties
+  // currentIndex: number = 0;
+  // previousIndex: number | null = null; // Track the previously active index
+  // intervalId: any;
+  // touchStartX: number = 0;
+  // touchEndX: number = 0;
+  // swipeThreshold: number = 50; // Minimum distance for a swipe to be registered
 
   features = [
     {
@@ -39,80 +41,22 @@ export class Solution implements OnInit, OnDestroy {
   ];
 
   ngOnInit(): void {
-    // Initialize component and start auto-slide
-    this.startAutoSlide();
+    // Initialize component and start auto-slide - Handled by directive
+    // this.startAutoSlide();
   }
 
   ngOnDestroy(): void {
-    this.stopAutoSlide();
+    // this.stopAutoSlide(); // Handled by directive
   }
 
-  startAutoSlide(): void {
-    if (!this.intervalId) { // Removed isScrollingManually check
-      this.intervalId = setInterval(() => {
-        this.nextSlide();
-      }, 3500); // Change slide every 5 seconds
-    }
-  }
-
-  stopAutoSlide(): void {
-    if (this.intervalId) {
-      clearInterval(this.intervalId);
-      this.intervalId = null;
-    }
-  }
-
-  nextSlide(): void {
-    this.previousIndex = this.currentIndex; // Store current as previous
-    this.currentIndex = (this.currentIndex + 1) % this.features.length;
-    this.stopAutoSlide(); // Stop auto-sliding when user interacts
-    this.startAutoSlide(); // Restart auto-sliding after a delay
-  }
-
-  prevSlide(): void {
-    this.previousIndex = this.currentIndex; // Store current as previous
-    this.currentIndex = (this.currentIndex - 1 + this.features.length) % this.features.length;
-    this.stopAutoSlide(); // Stop auto-sliding when user interacts
-    this.startAutoSlide(); // Restart auto-sliding after a delay
-  }
-
-  isLeaving(index: number): boolean {
-    // A card is "leaving" if it was the previousIndex and is not the currentIndex
-    return index === this.previousIndex && index !== this.currentIndex;
-  }
-
-  goToSlide(index: number): void {
-    if (index === this.currentIndex) {
-      return; // Do nothing if clicking on the current slide
-    }
-    this.previousIndex = this.currentIndex;
-    this.currentIndex = index;
-    this.stopAutoSlide(); // Stop auto-sliding when user interacts
-    this.startAutoSlide(); // Restart auto-sliding after a delay
-  }
-
-  onTouchStart(event: TouchEvent): void {
-    this.touchStartX = event.touches[0].clientX;
-    this.stopAutoSlide(); // Stop auto-slide on touch interaction
-  }
-
-  onTouchMove(event: TouchEvent): void {
-    // Prevent default scroll behavior only if a horizontal swipe is likely
-    // This can be tricky and might interfere with vertical scrolling.
-    // For now, let's just record the touchEndX.
-    this.touchEndX = event.touches[0].clientX;
-  }
-
-  onTouchEnd(event: TouchEvent): void {
-    const swipeDistance = this.touchStartX - this.touchEndX;
-
-    if (swipeDistance > this.swipeThreshold) {
-      // Swiped left
-      this.nextSlide();
-    } else if (swipeDistance < -this.swipeThreshold) {
-      // Swiped right
-      this.prevSlide();
-    }
-    this.startAutoSlide(); // Restart auto-slide after swipe
-  }
+  // Removed duplicated carousel methods
+  // startAutoSlide(): void { ... }
+  // stopAutoSlide(): void { ... }
+  // nextSlide(): void { ... }
+  // prevSlide(): void { ... }
+  // isLeaving(index: number): boolean { ... }
+  // goToSlide(index: number): void { ... }
+  // onTouchStart(event: TouchEvent): void { ... }
+  // onTouchMove(event: TouchEvent): void { ... }
+  // onTouchEnd(event: TouchEvent): void { ... }
 }

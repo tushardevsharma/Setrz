@@ -10,15 +10,15 @@
 
     <div
       class="solution-features-container"
-      (touchstart)="onTouchStart($event)"
-      (touchmove)="onTouchMove($event)"
-      (touchend)="onTouchEnd($event)"
+      appCarousel
+      [items]="features"
+      #carouselDir="appCarousel"
     >
       @for (feature of features; track feature; let i = $index) {
         <div
           class="solution-feature-card"
-          [class.active]="i === currentIndex"
-          [class.leaving]="isLeaving(i)">
+          [class.active]="i === carouselDir.currentIndex"
+          [class.leaving]="carouselDir.isLeaving(i)">
           <div class="row g-0 h-100 overflow-hidden"> <!-- Use row and g-0 for no gutter, h-100 for full height -->
             <div class="col-md-6 d-flex align-items-center justify-content-center p-0" [class.order-md-2]="feature.imageRight"> <!-- Image on left -->
               <img [src]="feature.image" [alt]="feature.title" class="card-img-left">
@@ -38,8 +38,8 @@
       @for (feature of features; track feature; let i = $index) {
         <button
           type="button"
-          [class.active]="i === currentIndex"
-          (click)="goToSlide(i)"
+          [class.active]="i === carouselDir.currentIndex"
+          (click)="carouselDir.goToSlide(i)"
           aria-label="Slide {{ i + 1 }}"
         class="carousel-indicator-dot"></button>
       }
