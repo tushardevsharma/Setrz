@@ -7,7 +7,10 @@
         </p>
       </div>
     </div>
-    <div #carouselContainer appCarousel [items]="services" (slideChange)="adjustCarouselHeight()" #carouselDir="appCarousel" class="services-carousel-container">
+    <div #carouselContainer appCarousel [items]="services" (slideChange)="adjustCarouselHeight()" #carouselDir="appCarousel"
+      [class.slide-next]="carouselDir.slideDirection === 'next'"
+      [class.slide-prev]="carouselDir.slideDirection === 'prev'"
+      class="services-carousel-container">
       @for (service of services; track service; let i = $index) {
         <div #carouselCard class="service-carousel-card"
           [class.active]="i === carouselDir.currentIndex" [class.leaving]="carouselDir.isLeaving(i)">

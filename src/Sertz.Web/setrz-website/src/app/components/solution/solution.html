@@ -13,6 +13,8 @@
       appCarousel
       [items]="features"
       #carouselDir="appCarousel"
+      [class.slide-next]="carouselDir.slideDirection === 'next'"
+      [class.slide-prev]="carouselDir.slideDirection === 'prev'"
     >
       @for (feature of features; track feature; let i = $index) {
         <div

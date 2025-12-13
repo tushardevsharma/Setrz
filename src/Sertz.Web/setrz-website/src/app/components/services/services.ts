@@ -65,7 +65,7 @@ export class Services implements OnInit, OnDestroy, AfterViewInit { // Implement
     // Re-adjust height if cards change (e.g., dynamic content)
     this.carouselCards.changes.subscribe(() => this.adjustCarouselHeight());
     // Subscribe to slide changes from the directive to adjust height
-    this.carouselDirective.slideChange.subscribe(() => this.adjustCarouselHeight());
+    this.carouselDirective.slideChange.subscribe((event) => this.adjustCarouselHeight());
   }
 
   ngOnDestroy(): void {
