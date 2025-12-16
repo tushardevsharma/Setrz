@@ -28,15 +28,11 @@ h1 {
 
 .cofounders-section {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr 1fr; /* Always 2 columns */
   gap: 40px;
 }
 
-@media (min-width: 768px) {
-  .cofounders-section {
-    grid-template-columns: 1fr 1fr;
-  }
-}
+/* Removed media query for vertical stacking on small screens */
 
 .cofounder-card {
   padding: 20px 0;
