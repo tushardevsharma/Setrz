@@ -1,12 +1,26 @@
 import { Component } from '@angular/core';
+import { NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-about-us',
-  standalone: true,
-  imports: [],
   templateUrl: './about-us.component.html',
-  styleUrl: './about-us.component.scss'
+  styleUrls: ['./about-us.component.scss'],
+  standalone: true,
+  imports: [NgFor]
 })
 export class AboutUsComponent {
-
+  cofounders = [
+    {
+      name: 'Suja Kunwar',
+      title: 'Co-Founder',
+      image: '../../LogoLarge.png', // Placeholder image
+      linkedin: 'https://www.linkedin.com/in/sujakunwar' // Placeholder LinkedIn
+    },
+    {
+      name: 'Tushar Dev Sharma',
+      title: 'Co-Founder',
+      image: '../../LogoLarge.png', // Placeholder image
+      linkedin: 'https://www.linkedin.com/in/tushardevsharma' // Placeholder LinkedIn
+    }
+  ];
 }

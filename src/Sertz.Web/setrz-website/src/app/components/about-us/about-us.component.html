@@ -1,2 +1,21 @@
+<div class="about-us-wrapper">
+  <div class="about-us-main-content">
+    <h1>About Us</h1>
+    <p class="intro-text">
+      We hated moving and our moving company made it even worse. So, we decided to solve it; for ourselves and for million others like us.
+      <br><br>
+      On a mission to make moving as easy as ordering food.
+    </p>
 
-<p>about-us works!</p>
+    <div class="cofounders-section">
+      <div *ngFor="let cofounder of cofounders" class="cofounder-card">
+        <img [src]="cofounder.image" alt="{{ cofounder.name }}" class="cofounder-image">
+        <h2>{{ cofounder.name }}</h2>
+        <h3>{{ cofounder.title }}</h3>
+        <a *ngIf="cofounder.linkedin" [href]="cofounder.linkedin" target="_blank" class="linkedin-link">
+          LinkedIn
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

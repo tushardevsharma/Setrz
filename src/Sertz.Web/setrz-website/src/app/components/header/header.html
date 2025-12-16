@@ -1,8 +1,8 @@
-<nav class="navbar navbar-expand-lg navbar-light fixed-top" [ngClass]="{'navbar-scrolled': isScrolled}">
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" [ngClass]="{'navbar-scrolled': isScrolled || !isHomePage}">
   <div class="container">
-    <a class="navbar-brand" 
+    <a class="navbar-brand"
        routerLink="/"
-       [ngClass]="{'text-light': !isScrolled, 'text-dark': isScrolled}">
+       [ngClass]="{'text-light': !isScrolled && isHomePage, 'text-dark': isScrolled || !isHomePage}">
       <img src="/LogoLarge.png" alt="Setrz Logo" class="navbar-logo me-2">
       Zeeroni
     </a>
@@ -12,12 +12,13 @@
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav" #navbarCollapse>
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" routerLink="/about-us" [ngClass]="{'text-light': !isScrolled, 'text-dark': isScrolled}" (click)="closeNavbar()">About Us</a>
+          <a class="nav-link" routerLink="/about-us" [ngClass]="{'text-light': !isScrolled && isHomePage, 'text-dark': isScrolled || !isHomePage}" (click)="closeNavbar()">About Us</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" (click)="navigateTo('/home', 'lead-form')" [ngClass]="{'text-light': !isScrolled, 'text-dark': isScrolled}">Get a Free Consultation</a>
+          <a class="nav-link" (click)="navigateTo('/home', 'lead-form')" [ngClass]="{'text-light': !isScrolled && isHomePage, 'text-dark': isScrolled || !isHomePage}">Get a Free Consultation</a>
         </li>
       </ul>
     </div>
   </div>
 </nav>
+

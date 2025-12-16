@@ -1,1 +1,77 @@
-/* Add component-specific styles here */
+.about-us-wrapper {
+  padding: 80px 20px;
+  background-color: #f8f8f8; /* Light background similar to fork.dev */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  color: #333;
+}
+
+.about-us-main-content {
+  max-width: 700px;
+  margin: 0 auto; /* Center the content */
+  text-align: left;
+}
+
+h1 {
+  font-size: 40px;
+  font-weight: 600;
+  margin-bottom: 40px;
+  color: #333;
+  text-align: center;
+}
+
+.intro-text {
+  font-size: 18px;
+  line-height: 1.6;
+  margin-bottom: 60px;
+  color: #555;
+}
+
+.cofounders-section {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+}
+
+@media (min-width: 768px) {
+  .cofounders-section {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.cofounder-card {
+  padding: 20px 0;
+  text-align: left; /* Ensure text within card is left-aligned */
+}
+
+.cofounder-image {
+  width: 100px; /* Adjust size as needed */
+  height: 100px; /* Adjust size as needed */
+  border-radius: 50%; /* Make it round */
+  object-fit: cover;
+  margin-bottom: 15px;
+}
+
+.cofounder-card h2 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.cofounder-card h3 {
+  font-size: 16px;
+  font-weight: 400;
+  color: #777;
+}
+
+.linkedin-link {
+  display: inline-block;
+  margin-top: 10px;
+  color: #007bff; /* LinkedIn blue */
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.linkedin-link:hover {
+  text-decoration: underline;
+}

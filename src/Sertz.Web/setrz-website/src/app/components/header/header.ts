@@ -1,8 +1,11 @@
-import { Component, HostListener, ViewChild, ElementRef } from '@angular/core';
+import { Component, HostListener, ViewChild, ElementRef, OnInit, OnDestroy } from '@angular/core';
 import { NgClass } from '@angular/common';
-import { Router, RouterLink } from '@angular/router'; // Import Router
-import { ViewportScroller } from '@angular/common'; // Import ViewportScroller
-declare var bootstrap: any; // Declare bootstrap to avoid TypeScript errors
+import { Router, RouterLink, NavigationEnd, ActivatedRoute } from '@angular/router';
+import { ViewportScroller } from '@angular/common';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
+
+declare var bootstrap: any;
 
 @Component({
   selector: 'app-header',
@@ -11,26 +14,51 @@ declare var bootstrap: any; // Declare bootstrap to avoid TypeScript errors
   templateUrl: './header.html',
   styleUrl: './header.scss'
 })
-export class Header {
+export class Header implements OnInit, OnDestroy {
   isScrolled = false;
+  isHomePage = true; // New property to track if it's the home page
+  private routerSubscription!: Subscription;
+
   @ViewChild('navbarCollapse') navbarCollapse!: ElementRef;
 
-  constructor(private router: Router, private scroller: ViewportScroller) {} // Inject Router and ViewportScroller
+  constructor(private router: Router, private scroller: ViewportScroller, private activatedRoute: ActivatedRoute) {}
+
+  ngOnInit() {
+    this.routerSubscription = this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+      this.isHomePage = (event.urlAfterRedirects === '/' || event.urlAfterRedirects === '/home');
+      // If not on home page, ensure header text is dark regardless of scroll
+      if (!this.isHomePage) {
+        this.isScrolled = true; // Force scrolled state for dark text
+      } else {
+        // Reset for home page, will be controlled by scroll listener
+        this.isScrolled = window.scrollY > 50;
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.routerSubscription) {
+      this.routerSubscription.unsubscribe();
+    }
+  }
 
   @HostListener('window:scroll', [])
   onWindowScroll() {
-    this.isScrolled = window.scrollY > 50;
+    if (this.isHomePage) { // Only apply scroll effect on home page
+      this.isScrolled = window.scrollY > 50;
+    }
   }
 
   navigateTo(path: string, fragment?: string) {
     this.router.navigate([path], { fragment: fragment }).then(() => {
       if (fragment) {
-        // Use a timeout to ensure the element is rendered before attempting to scroll
         setTimeout(() => {
           this.scroller.scrollToAnchor(fragment);
-        }, 100); // Small delay
+        }, 100);
       }
-      this.closeNavbar(); // Close navbar after navigation
+      this.closeNavbar();
     });
   }
 
