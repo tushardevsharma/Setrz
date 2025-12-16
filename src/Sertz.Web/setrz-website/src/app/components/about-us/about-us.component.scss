@@ -67,11 +67,18 @@ h1 {
 .linkedin-link {
   display: inline-block;
   margin-top: 10px;
-  color: #007bff; /* LinkedIn blue */
+  /* color: #007bff; */ /* Removed text color as it's an icon now */
   text-decoration: none;
   font-weight: 500;
 }
 
-.linkedin-link:hover {
-  text-decoration: underline;
+.linkedin-icon {
+  width: 24px; /* Adjust size as needed */
+  height: 24px; /* Adjust size as needed */
+  fill: #007bff; /* LinkedIn blue */
+  vertical-align: middle; /* Align with text if any */
+}
+
+.linkedin-link:hover .linkedin-icon {
+  fill: #0056b3; /* Darker blue on hover */
 }
