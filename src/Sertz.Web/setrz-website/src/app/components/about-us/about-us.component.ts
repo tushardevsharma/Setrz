@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common'; // Import CommonModule
+import { LeadForm } from '../lead-form/lead-form';
+import { ScrollAnimationDirective } from '../../directives/scroll-animation.directive';
 
 @Component({
   selector: 'app-about-us',
   templateUrl: './about-us.component.html',
   styleUrls: ['./about-us.component.scss'],
   standalone: true,
-  imports: [CommonModule] // Use CommonModule here
+  imports: [CommonModule, LeadForm, ScrollAnimationDirective] // Use CommonModule here
 })
 export class AboutUsComponent {
   cofounders = [
