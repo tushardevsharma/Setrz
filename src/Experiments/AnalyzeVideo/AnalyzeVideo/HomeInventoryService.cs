@@ -64,80 +64,79 @@ public class GeminiInventoryService(Client client)
                 config: new GenerateContentConfig
                 {
                     ResponseMimeType = "application/json",
-                    ResponseSchema = new GTypes.Schema
+                    ResponseSchema = new Schema
                     {
                         Type = GTypes.Type.ARRAY,
-                        Items = new GTypes.Schema
+                        Items = new Schema
                         {
                             Type = GTypes.Type.OBJECT,
-                            Properties = new Dictionary<string, GTypes.Schema>
+                            Properties = new Dictionary<string, Schema>
                             {
-                                { "item", new GTypes.Schema { Type = GTypes.Type.STRING } },
+                                { "item", new Schema { Type = GTypes.Type.STRING } },
                                 {
-                                    "dimensions", new GTypes.Schema
+                                    "dimensions", new Schema
                                     {
                                         Type = GTypes.Type.OBJECT,
-                                        Properties = new Dictionary<string, GTypes.Schema>
+                                        Properties = new Dictionary<string, Schema>
                                         {
-                                            { "length_cm", new GTypes.Schema { Type = GTypes.Type.NUMBER } },
-                                            { "width_cm", new GTypes.Schema { Type = GTypes.Type.NUMBER } },
-                                            { "height_cm", new GTypes.Schema { Type = GTypes.Type.NUMBER } }
+                                            { "length_cm", new Schema { Type = GTypes.Type.NUMBER } },
+                                            { "width_cm", new Schema { Type = GTypes.Type.NUMBER } },
+                                            { "height_cm", new Schema { Type = GTypes.Type.NUMBER } }
                                         }
                                     }
                                 },
                                 {
-                                    "packaging", new GTypes.Schema
+                                    "packaging", new Schema
                                     {
                                         Type = GTypes.Type.OBJECT,
-                                        Properties = new Dictionary<string, GTypes.Schema>
+                                        Properties = new Dictionary<string, Schema>
                                         {
                                             {
                                                 "primary_material_type",
-                                                new GTypes.Schema
+                                                new Schema
                                                 {
                                                     Type = GTypes.Type.STRING,
-                                                    Enum = new List<string>
-                                                    {
+                                                    Enum =
+                                                    [
                                                         "Bubble Wrap", "Moving Blanket", "Cardboard Box", "Shrink Wrap",
                                                         "Wooden Crate", "Mattress Cover"
-                                                    }
+                                                    ]
                                                 }
                                             },
-                                            { "quantity_estimate", new GTypes.Schema { Type = GTypes.Type.NUMBER } },
+                                            { "quantity_estimate", new Schema { Type = GTypes.Type.NUMBER } },
                                             {
                                                 "unit",
-                                                new GTypes.Schema
+                                                new Schema
                                                 {
                                                     Type = GTypes.Type.STRING,
-                                                    Enum = new List<string> { "Meters", "Units", "Rolls", "Kg" }
+                                                    Enum = ["Meters", "Units", "Rolls", "Kg"]
                                                 }
                                             },
-                                            { "packed_volume_m3", new GTypes.Schema { Type = GTypes.Type.NUMBER } }
+                                            { "packed_volume_m3", new Schema { Type = GTypes.Type.NUMBER } }
                                         },
-                                        Required = new List<string>
-                                            { "primary_material_type", "quantity_estimate", "unit" }
+                                        Required = ["primary_material_type", "quantity_estimate", "unit"]
                                     }
                                 },
                                 {
-                                    "logistics", new GTypes.Schema
+                                    "logistics", new Schema
                                     {
                                         Type = GTypes.Type.OBJECT,
-                                        Properties = new Dictionary<string, GTypes.Schema>
+                                        Properties = new Dictionary<string, Schema>
                                         {
                                             {
                                                 "fragility",
-                                                new GTypes.Schema
+                                                new Schema
                                                 {
                                                     Type = GTypes.Type.STRING,
-                                                    Enum = new List<string> { "Low", "Medium", "High" }
+                                                    Enum = ["Low", "Medium", "High"]
                                                 }
                                             },
-                                            { "is_stackable", new GTypes.Schema { Type = GTypes.Type.BOOLEAN } },
-                                            { "requires_disassembly", new GTypes.Schema { Type = GTypes.Type.BOOLEAN } }
+                                            { "is_stackable", new Schema { Type = GTypes.Type.BOOLEAN } },
+                                            { "requires_disassembly", new Schema { Type = GTypes.Type.BOOLEAN } }
                                         }
                                     }
                                 },
-                                { "notes", new GTypes.Schema { Type = GTypes.Type.STRING } }
+                                { "notes", new Schema { Type = GTypes.Type.STRING } }
                             }
                         }
                     }
@@ -167,13 +166,13 @@ public class GeminiInventoryService(Client client)
             // 2. Wait for Processing (Critical step)
             // You cannot use the URI until state is 'Active'
             var file = upload;
-            while (file.State == GTypes.FileState.PROCESSING)
+            while (file.State == FileState.PROCESSING)
             {
                 await Task.Delay(2000);
-                file = await client.Files.GetAsync(file.Name);
+                file = await client.Files.GetAsync(file.Name!);
             }
 
-            return file.State == GTypes.FileState.FAILED
+            return file.State == FileState.FAILED
                 ? Results.Problem("Video processing failed on Google's side.")
                 :
                 // 3. Return the URI to the client (app) to store for this session
