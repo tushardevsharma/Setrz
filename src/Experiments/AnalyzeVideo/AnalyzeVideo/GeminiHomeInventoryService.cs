@@ -7,7 +7,7 @@ namespace AnalyzeVideo;
 
 public class GeminiHomeInventoryService(Client client)
 {
-    private static readonly string GeminiModel = "gemini-2.5-pro";
+    private static readonly string GeminiModel = "gemini-flash-latest";
 
     private static readonly string GeminiPrompt = """
 
@@ -174,14 +174,14 @@ public class GeminiHomeInventoryService(Client client)
         }
     }
 
-    public async Task<IResult> UploadVideo(string filePath)
+    public async Task<IResult> UploadVideo(string filePath, string fileDisplayName)
     {
         try
         {
             // 1. Upload to Gemini
             var upload = await client.Files.UploadAsync(filePath, new UploadFileConfig
             {
-                DisplayName = $"Survey_{DateTime.UtcNow.Ticks}"
+                DisplayName = $"{fileDisplayName}_{DateTime.UtcNow.Ticks}"
             });
 
             // 2. Wait for Processing (Critical step)
@@ -197,7 +197,7 @@ public class GeminiHomeInventoryService(Client client)
                 ? Results.Problem("Video processing failed on Google's side.")
                 :
                 // 3. Return the URI to the client (app) to store for this session
-                Results.Ok(new { FileUri = file.Uri, Expiration = file.ExpirationTime });
+                Results.Ok(new { FildId = file.Name, FileUri = file.Uri, Expiration = file.ExpirationTime });
         }
         finally
         {
@@ -221,5 +221,46 @@ public class GeminiHomeInventoryService(Client client)
         }
 
         return available;
+    }
+    
+    public async Task<IResult> FindFile(string? uri = null)
+    {
+        var allFiles = await client.Files.ListAsync(new ListFilesConfig { PageSize = 20 });
+
+        if (string.IsNullOrEmpty(uri))
+        {
+            var results = new List<object>();
+            await foreach (var file in allFiles)
+            {
+                results.Add(new
+                {
+                    Id = file.Name,
+                    DisplayName = file.DisplayName,
+                    State = file.State.ToString(),
+                    Uri = file.Uri,
+                    Expires = file.ExpirationTime
+                });
+            }
+
+            return Results.Ok(results);
+        }
+    
+        await foreach (var file in allFiles)
+        {
+            if (string.Equals(file.Uri, uri, StringComparison.OrdinalIgnoreCase))
+            {
+                return Results.Ok(new
+                {
+                    Id = file.Name,
+                    DisplayName = file.DisplayName,
+                    Uri = file.Uri,
+                    State = file.State.ToString(),
+                    Created = file.CreateTime,
+                    Expires = file.ExpirationTime
+                });
+            }
+        }
+
+        return Results.NotFound(new { Message = "File with that URI was not found (it may have expired)." });
     }
 }

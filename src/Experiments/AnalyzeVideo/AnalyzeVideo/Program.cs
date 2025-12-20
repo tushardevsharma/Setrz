@@ -1,6 +1,7 @@
 using AnalyzeVideo;
 using Google.GenAI;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Mvc;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -40,27 +41,28 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapPost("/api/survey/upload", UploadVideo).DisableAntiforgery().WithTags("AISurvey");
+app.MapPost("/api/survey/upload", UploadVideo).Accepts<VideoUploadRequest>("multipart/form-data").DisableAntiforgery().WithTags("AISurvey");
 app.MapPost("/api/survey/analyze", AnalyzeVideo).WithTags("AISurvey");
 
-app.MapPost("/api/gemini/health", CheckGeminiHealth).WithTags("Debug");
+app.MapPost("/api/debug/health", CheckGeminiHealth).WithTags("Debug");
+app.MapGet("/api/debug/files", async (GeminiHomeInventoryService service, [FromQuery] string? uri = null) => await service.FindFile(uri)).WithTags("Debug");
 app.MapGet("/api/debug/models", async (GeminiHomeInventoryService service) => await service.GetAvailableModels()).WithTags("Debug");
 
 app.Run();
 
-async Task<IResult> UploadVideo(IFormFile? videoFile, GeminiHomeInventoryService service)
+async Task<IResult> UploadVideo([FromForm] VideoUploadRequest request, GeminiHomeInventoryService service)
 {
-    if (videoFile == null) 
+    if (request.VideoFile is null) 
         return Results.BadRequest("No file.");
 
     var tempPath = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.mp4");
     
     await using (var stream = new FileStream(tempPath, FileMode.Create))
     {
-        await videoFile.CopyToAsync(stream);
+        await request.VideoFile.CopyToAsync(stream);
     }
 
-    return await service.UploadVideo(tempPath);
+    return await service.UploadVideo(tempPath, request.CustomName ?? request.VideoFile.FileName);
 }
 
 async Task<IResult> AnalyzeVideo(AnalyzeRequest request, GeminiHomeInventoryService service)
