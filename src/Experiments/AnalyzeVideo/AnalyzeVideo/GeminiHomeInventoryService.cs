@@ -5,9 +5,9 @@ using GTypes = Google.GenAI.Types;
 
 namespace AnalyzeVideo;
 
-public class GeminiInventoryService(Client client)
+public class GeminiHomeInventoryService(Client client)
 {
-    private static readonly string GeminiModel = "gemini-3-pro-preview";
+    private static readonly string GeminiModel = "gemini-2.5-pro";
 
     private static readonly string GeminiPrompt = """
 
@@ -16,14 +16,20 @@ public class GeminiInventoryService(Client client)
 
                                                   ### CRITICAL INSTRUCTIONS:
 
-                                                  1. SPATIAL GROUNDING & DIMENSIONS: 
+                                                  1. TEMPORAL GROUNDING (NEW):
+                                                  - For every distinct item identified, capture the precise timestamp range during which the item is clearly visible and being analyzed.
+                                                  - Start Time: The moment the item first enters the frame or becomes the focus.
+                                                  - End Time: The moment the item leaves the frame or the camera moves away.
+                                                  - Format: Use "MM:SS" (Minutes:Seconds).
+                                                  
+                                                  2. SPATIAL GROUNDING & DIMENSIONS: 
                                                      - Use architectural anchors (Door=203cm, Counter=90cm, Tiles=60cm) to estimate real-world scale.
                                                      - Output exact bounding box dimensions (Length x Width x Height) in cm.
                                                      - If an object is irregular (e.g., an L-shaped sofa), calculate the volume of the space it effectively occupies in a truck.
 
-                                                  2. GEOMETRICAL ANALYSIS: Calculate Length, Width, and Height (L x W x H) in cm. For non-cuboid items, provide the 'Bounding Box' volume (the space required to box the item).
-                                                  
-                                                  3. PACKAGING MATERIAL LOGIC:
+                                                  3. GEOMETRICAL ANALYSIS: Calculate Length, Width, and Height (L x W x H) in cm. For non-cuboid items, provide the 'Bounding Box' volume (the space required to box the item).
+
+                                                  4. PACKAGING MATERIAL LOGIC:
                                                      Estimate the exact materials required to pack each item safely. Use these rules:
                                                      - Furniture (Sofas/Chairs): Recommend 'Moving Blankets' & 'Shrink Wrap'.
                                                        * Logic: 1 Blanket per 1.5m of surface area.
@@ -32,10 +38,10 @@ public class GeminiInventoryService(Client client)
                                                      - Small/Loose Items (Books/Utensils): Recommend 'Cardboard Box (M)' or 'Cardboard Box (L)'.
                                                      - Mattresses: Recommend 'Mattress Cover'.
 
-                                                  4. AUDIO ANALYSIS:
+                                                  5. AUDIO ANALYSIS:
                                                      - Listen for user voice cues. If the user says "This is antique," "Be careful," or "Expensive," mark 'fragility' as 'High' and add a note.
 
-                                                  5. LOGISTICS ATTRIBUTES:
+                                                  6. LOGISTICS ATTRIBUTES:
                                                      - Stackability: Can heavy items be placed on top? (true/false)
                                                      - Disassembly: Does it require tools (hex keys/screwdrivers) to move? (true/false)
 
@@ -73,6 +79,20 @@ public class GeminiInventoryService(Client client)
                             Properties = new Dictionary<string, Schema>
                             {
                                 { "item", new Schema { Type = GTypes.Type.STRING } },
+                                {
+                                    "timestamp_start",
+                                    new Schema
+                                    {
+                                        Type = GTypes.Type.STRING, Description = "Start time of item visibility (MM:SS)"
+                                    }
+                                },
+                                {
+                                    "timestamp_end",
+                                    new Schema
+                                    {
+                                        Type = GTypes.Type.STRING, Description = "End time of item visibility (MM:SS)"
+                                    }
+                                },
                                 {
                                     "dimensions", new Schema
                                     {
@@ -137,7 +157,8 @@ public class GeminiInventoryService(Client client)
                                     }
                                 },
                                 { "notes", new Schema { Type = GTypes.Type.STRING } }
-                            }
+                            },
+                            Required = ["item", "timestamp_start", "timestamp_end", "dimensions", "packaging", "logistics"]
                         }
                     }
                 }
@@ -189,7 +210,7 @@ public class GeminiInventoryService(Client client)
     {
         var models = await client.Models.ListAsync();
         var available = new List<string>();
-    
+
         await foreach (var model in models)
         {
             // Filter for "generateContent" capable models
@@ -198,6 +219,7 @@ public class GeminiInventoryService(Client client)
                 available.Add($"{model.Name} ({model.DisplayName})");
             }
         }
+
         return available;
     }
 }

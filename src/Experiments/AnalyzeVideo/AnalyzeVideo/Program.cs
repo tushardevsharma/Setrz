@@ -23,7 +23,7 @@ builder.Services.AddOpenApi();
 
 // App services
 builder.Services.AddSingleton<Client>();
-builder.Services.AddSingleton<GeminiInventoryService>();
+builder.Services.AddSingleton<GeminiHomeInventoryService>();
 builder.Services.AddSingleton<GeminiHealthService>();
 
 var app = builder.Build();
@@ -44,11 +44,11 @@ app.MapPost("/api/survey/upload", UploadVideo).DisableAntiforgery().WithTags("AI
 app.MapPost("/api/survey/analyze", AnalyzeVideo).WithTags("AISurvey");
 
 app.MapPost("/api/gemini/health", CheckGeminiHealth).WithTags("Debug");
-app.MapGet("/api/debug/models", async (GeminiInventoryService service) => await service.GetAvailableModels()).WithTags("Debug");
+app.MapGet("/api/debug/models", async (GeminiHomeInventoryService service) => await service.GetAvailableModels()).WithTags("Debug");
 
 app.Run();
 
-async Task<IResult> UploadVideo(IFormFile? videoFile, GeminiInventoryService service)
+async Task<IResult> UploadVideo(IFormFile? videoFile, GeminiHomeInventoryService service)
 {
     if (videoFile == null) 
         return Results.BadRequest("No file.");
@@ -63,7 +63,7 @@ async Task<IResult> UploadVideo(IFormFile? videoFile, GeminiInventoryService ser
     return await service.UploadVideo(tempPath);
 }
 
-async Task<IResult> AnalyzeVideo(AnalyzeRequest request, GeminiInventoryService service)
+async Task<IResult> AnalyzeVideo(AnalyzeRequest request, GeminiHomeInventoryService service)
 {
     return await service.AnalyzeHomeVideo(request);
 }
