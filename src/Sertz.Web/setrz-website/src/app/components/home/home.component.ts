@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Hero } from '../hero/hero';
 import { Problem } from '../problem/problem';
 import { Solution } from '../solution/solution';
@@ -27,5 +27,9 @@ import { TechJourney } from '../tech-journey/tech-journey';
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
-  // Any logic specific to the home page can go here
+  @ViewChild(LeadForm) leadForm!: LeadForm;
+
+  onGetConsultation(): void {
+    this.leadForm.scrollIntoView();
+  }
 }

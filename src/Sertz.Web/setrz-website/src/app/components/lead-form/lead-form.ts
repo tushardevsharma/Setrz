@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, inject } from '@angular/core';
 
 @Component({
   selector: 'app-lead-form',
@@ -8,4 +8,9 @@ import { Component } from '@angular/core';
   styleUrl: './lead-form.scss'
 })
 export class LeadForm {
+  private elementRef = inject(ElementRef);
+
+  public scrollIntoView(): void {
+    this.elementRef.nativeElement.scrollIntoView({ behavior: 'smooth' });
+  }
 }

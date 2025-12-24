@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, AfterViewInit, OnDestroy, Output, EventEmitter } from '@angular/core';
  // Import CommonModule
 
 @Component({
@@ -9,6 +9,7 @@ import { Component, OnInit, ElementRef, ViewChild, AfterViewInit, OnDestroy } fr
   styleUrl: './hero.scss',
 })
 export class Hero implements OnInit, AfterViewInit, OnDestroy { // Implement OnDestroy
+  @Output() getConsultation = new EventEmitter<void>();
 
   @ViewChild('typewriterText') typewriterTextRef!: ElementRef;
   @ViewChild('typedCursor') typedCursorRef!: ElementRef;
@@ -53,6 +54,10 @@ export class Hero implements OnInit, AfterViewInit, OnDestroy { // Implement OnD
     if (this.cursorBlinkInterval) {
       clearInterval(this.cursorBlinkInterval);
     }
+  }
+
+  onGetConsultationClick(): void {
+    this.getConsultation.emit();
   }
 
   handleTypeWriter = () => {
