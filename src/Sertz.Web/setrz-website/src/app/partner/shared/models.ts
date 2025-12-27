@@ -38,3 +38,9 @@ export interface SurveyUpload {
   message: string | null;
   createdTimestamp: string;
 }
+
+export interface UploadStatusResponse {
+  uploadId: string;
+  status: 'Pending' | 'Processing' | 'Completed' | 'Failed';
+  message?: string | null;
+}
