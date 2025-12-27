@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Header } from './components/header/header';
 import { Footer } from './components/footer/footer';
+import { CommonModule } from '@angular/common'; // Keep CommonModule for other potential uses
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,8 @@ import { Footer } from './components/footer/footer';
   imports: [
     RouterOutlet,
     Header,
-    Footer
+    Footer,
+    CommonModule
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss'

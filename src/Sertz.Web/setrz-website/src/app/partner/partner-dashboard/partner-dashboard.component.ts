@@ -32,6 +32,11 @@ export class PartnerDashboardComponent implements OnInit, OnDestroy {
     this.pollingSubscription?.unsubscribe();
   }
 
+  logout() {
+    console.log('PartnerDashboardComponent: Logging out...');
+    this.authService.logout();
+  }
+
   private getHeaders(): HttpHeaders {
     const token = this.authService.getToken();
     console.log('PartnerDashboardComponent: Getting headers. Token:', token ? 'Present' : 'Missing');
@@ -55,10 +60,15 @@ export class PartnerDashboardComponent implements OnInit, OnDestroy {
         // Merge API data with local state (e.g., simulated progress and videoName)
         this.uploads = apiUploads.map(apiUpload => {
           const existingUpload = this.uploads.find(u => u.uploadId === apiUpload.uploadId);
+
+          const id = apiUpload.uploadId;
+          // Format: First 4 + ... + Last 4
+          const shortId = id.length > 8 ? `${id.slice(0, 4)}...${id.slice(-4)}` : id;
+
           return {
             ...apiUpload,
             progress: existingUpload?.progress || (apiUpload.status === 'Completed' || apiUpload.status === 'Failed' ? 100 : 0),
-            videoName: existingUpload?.videoName || `Video_${apiUpload.uploadId.substring(0, 8)}.mp4` // Placeholder if not found locally
+            videoName: existingUpload?.videoName || `Video_${shortId}.mp4` // Placeholder if not found locally
           };
         });
       });
@@ -66,7 +76,7 @@ export class PartnerDashboardComponent implements OnInit, OnDestroy {
 
   startPolling() {
     console.log('PartnerDashboardComponent: Starting polling for uploads...');
-    this.pollingSubscription = interval(5000) // Poll every 5 seconds
+    this.pollingSubscription = interval(30_000) // Poll every 5 seconds
       .pipe(
         startWith(0), // Fetch immediately on init
         switchMap(() => this.http.get<SurveyUpload[]>(`${this.API_BASE_URL}/uploads/user`, { headers: this.getHeaders() })),
