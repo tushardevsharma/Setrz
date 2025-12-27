@@ -109,6 +109,8 @@
   align-items: center;
   padding: 15px 0;
   border-bottom: 1px solid #eee;
+  flex-wrap: wrap; /* Allow items to wrap */
+  gap: 10px; /* Add some space between wrapped items */
 
   &:last-child {
     border-bottom: none;
@@ -116,6 +118,11 @@
 
   .item-details {
     flex-grow: 1;
+    /* On small screens, take full width */
+    @media (max-width: 768px) {
+      width: 100%;
+      text-align: left;
+    }
     .video-name {
       font-weight: bold;
       color: #333;
@@ -132,6 +139,11 @@
     flex-direction: column;
     align-items: flex-start;
     min-width: 120px;
+    /* On small screens, take full width and center align */
+    @media (max-width: 768px) {
+      width: 100%;
+      align-items: flex-start; /* Align status to left */
+    }
   }
 
   .status-badge {
@@ -173,6 +185,13 @@
   }
 
   .item-actions {
+    /* On small screens, take full width and center align buttons */
+    @media (max-width: 768px) {
+      width: 100%;
+      display: flex;
+      justify-content: flex-start; /* Align buttons to left */
+      margin-top: 10px; /* Add space above buttons */
+    }
     .action-button {
       padding: 8px 15px;
       border: none;
@@ -180,6 +199,8 @@
       cursor: pointer;
       font-size: 14px;
       transition: background-color 0.3s ease;
+      /* Ensure buttons don't take full width unless necessary */
+      white-space: nowrap;
     }
 
     .primary-button {
