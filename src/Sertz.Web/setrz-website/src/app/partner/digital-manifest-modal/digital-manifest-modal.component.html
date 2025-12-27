@@ -1,0 +1,49 @@
+<div class="modal-overlay" (click)="onClose()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Digital Manifest</h2>
+      <button class="close-button" (click)="onClose()">×</button>
+    </div>
+    <div class="modal-body">
+      <div *ngIf="!manifestData || manifestData.length === 0" class="no-data-message">
+        No digital manifest data available.
+      </div>
+
+      <div *ngFor="let item of manifestData" class="manifest-item-card">
+        <div class="item-header">
+          <h3>{{ item.item }} ({{ item.quantity }})</h3>
+          <span class="timestamps">{{ item.timestamp_start }} - {{ item.timestamp_end }}</span>
+        </div>
+
+        <div class="item-body-grid">
+          <div class="grid-section">
+            <h4>Dimensions</h4>
+            <p>H: {{ item.dimensions.height_cm }}cm | L: {{ item.dimensions.length_cm }}cm | W: {{ item.dimensions.width_cm }}cm</p>
+          </div>
+
+          <div class="grid-section">
+            <h4>Packaging</h4>
+            <div *ngFor="let layer of item.packaging_plan" class="packaging-layer">
+              <p>{{ layer.primary_material_type }}: {{ layer.quantity_estimate }} {{ layer.unit }}</p>
+              <p *ngIf="layer.packed_volume_m3">Volume: {{ layer.packed_volume_m3 }} m³</p>
+            </div>
+          </div>
+
+          <div class="grid-section">
+            <h4>Logistics</h4>
+            <div class="logistics-tags">
+              <span *ngFor="let tag of getLogisticsTags(item.logistics)" class="tag-badge">{{ tag }}</span>
+            </div>
+          </div>
+
+          <div *ngIf="item.notes" class="grid-section full-width">
+            <h4>Notes</h4>
+            <div class="notes-alert">
+              {{ item.notes }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

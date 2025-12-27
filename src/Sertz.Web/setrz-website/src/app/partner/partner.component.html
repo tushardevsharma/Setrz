@@ -1,0 +1,9 @@
+<div class="partner-container">
+  <ng-container *ngIf="!(isAuthenticated$ | async); else dashboardContent">
+    <app-partner-auth></app-partner-auth>
+  </ng-container>
+
+  <ng-template #dashboardContent>
+    <app-partner-dashboard></app-partner-dashboard>
+  </ng-template>
+</div>
