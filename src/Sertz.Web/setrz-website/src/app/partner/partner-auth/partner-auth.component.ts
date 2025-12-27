@@ -2,6 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
+import { NotificationService } from '../services/notification.service'; // Import NotificationService
 
 @Component({
   selector: 'app-partner-auth',
@@ -13,10 +14,13 @@ import { AuthService } from '../services/auth.service';
 export class PartnerAuthComponent {
   @Output() loggedIn = new EventEmitter<void>();
   loginForm: FormGroup;
-  errorMessage: string | null = null;
   isLoading: boolean = false;
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private notificationService: NotificationService // Inject NotificationService
+  ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -25,7 +29,6 @@ export class PartnerAuthComponent {
   }
 
   async onSubmit() {
-    this.errorMessage = null;
     this.isLoading = true;
     console.log('PartnerAuthComponent: onSubmit called. Form valid:', this.loginForm.valid);
 
@@ -35,13 +38,14 @@ export class PartnerAuthComponent {
 
       if (result.success) {
         console.log('PartnerAuthComponent: Login successful, emitting loggedIn.');
+        this.notificationService.showSuccess('Login successful!');
         this.loggedIn.emit();
       } else {
-        this.errorMessage = result.error;
+        this.notificationService.showError(result.error || 'Login failed. Please check your credentials.');
         console.error('PartnerAuthComponent: Login failed with error:', result.error);
       }
     } else {
-      this.errorMessage = 'Please enter valid email and password.';
+      this.notificationService.showError('Please enter valid email and password.');
       console.error('PartnerAuthComponent: Form is invalid.');
     }
     this.isLoading = false;

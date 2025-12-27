@@ -12,6 +12,17 @@
   <main class="dashboard-main">
     <h2>Video Survey Upload</h2>
 
+    <!-- Custom File Name Input -->
+    <div class="form-group custom-file-name-input">
+      <label for="customFileName">Custom File Name (Optional)</label>
+      <input
+        id="customFileName"
+        type="text"
+        [(ngModel)]="customFileName"
+        placeholder="Enter a custom name for your video"
+      />
+    </div>
+
     <!-- Upload Area -->
     <div
       class="upload-area"
@@ -34,36 +45,44 @@
     <!-- Survey List -->
     <div class="survey-list">
       <h3>Recent Uploads</h3>
-      <div class="upload-item-card" *ngFor="let upload of uploads">
-        <div class="item-details">
-          <span class="video-name">{{ upload.videoName }}</span>
-          <span class="timestamp">{{ upload.createdTimestamp | date: 'short' }}</span>
+      <div *ngIf="isLoadingUploads" class="loading-spinner-container">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading uploads...</span>
         </div>
-        <div class="item-status">
-          <span class="status-badge" [ngClass]="getStatusClass(upload.status)">
-            {{ upload.status }}
-          </span>
-          <div class="progress-bar-container" *ngIf="upload.status === 'Pending' || upload.status === 'Processing'">
-            <div class="progress-bar" [style.width.%]="upload.progress"></div>
+        <p>Loading uploads...</p>
+      </div>
+      <ng-container *ngIf="!isLoadingUploads">
+        <div class="upload-item-card" *ngFor="let upload of uploads">
+          <div class="item-details">
+            <span class="video-name">{{ upload.videoName }}</span>
+            <span class="timestamp">{{ upload.createdTimestamp | date: 'short' }}</span>
+          </div>
+          <div class="item-status">
+            <span class="status-badge" [ngClass]="getStatusClass(upload.status)">
+              {{ upload.status }}
+            </span>
+            <div class="progress-bar-container" *ngIf="upload.status === 'Pending' || upload.status === 'Processing'">
+              <div class="progress-bar" [style.width.%]="upload.progress"></div>
+            </div>
+          </div>
+          <div class="item-actions">
+            <button
+              *ngIf="upload.status === 'Completed'"
+              class="action-button primary-button"
+              (click)="openDigitalManifest(upload.uploadId)"
+            >
+              Get Digital Manifest
+            </button>
+            <button
+              *ngIf="upload.status === 'Failed'"
+              class="action-button retry-button"
+            >
+              Retry
+            </button>
           </div>
         </div>
-        <div class="item-actions">
-          <button
-            *ngIf="upload.status === 'Completed'"
-            class="action-button primary-button"
-            (click)="openDigitalManifest(upload.uploadId)"
-          >
-            Get Digital Manifest
-          </button>
-          <button
-            *ngIf="upload.status === 'Failed'"
-            class="action-button retry-button"
-          >
-            Retry
-          </button>
-        </div>
-      </div>
-      <p *ngIf="uploads.length === 0" class="no-uploads">No uploads yet.</p>
+        <p *ngIf="uploads.length === 0" class="no-uploads">No uploads yet.</p>
+      </ng-container>
     </div>
   </main>
 </div>
@@ -73,4 +92,11 @@
   *ngIf="isModalOpen"
   [manifestData]="selectedManifest"
   (closeModal)="closeDigitalManifest()"
-></app-digital-manifest-modal>
+>
+  <div *ngIf="isLoadingManifest" class="modal-loading-overlay">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading manifest...</span>
+    </div>
+    <p>Loading manifest...</p>
+  </div>
+</app-digital-manifest-modal>

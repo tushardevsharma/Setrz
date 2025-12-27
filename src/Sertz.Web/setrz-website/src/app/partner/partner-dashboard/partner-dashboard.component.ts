@@ -1,15 +1,17 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms'; // Import FormsModule
 import { HttpClient, HttpHeaders, HttpEvent, HttpEventType } from '@angular/common/http';
 import { DigitalManifestModalComponent } from '../digital-manifest-modal/digital-manifest-modal.component';
 import { AuthService } from '../services/auth.service';
+import { NotificationService } from '../services/notification.service';
 import { SurveyUpload, GeminiAnalyzedItem, UploadStatusResponse } from '../shared/models';
-import { interval, Subscription, switchMap, startWith, takeWhile, tap, map, catchError, of, concatMap, combineLatest, filter, Observable } from 'rxjs'; // Added filter, Observable
+import { interval, Subscription, switchMap, startWith, takeWhile, tap, map, catchError, of, concatMap, combineLatest, filter, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-partner-dashboard',
   standalone: true,
-  imports: [CommonModule, DigitalManifestModalComponent],
+  imports: [CommonModule, DigitalManifestModalComponent, FormsModule], // Add FormsModule
   templateUrl: './partner-dashboard.component.html',
   styleUrl: './partner-dashboard.component.scss',
 })
@@ -17,11 +19,18 @@ export class PartnerDashboardComponent implements OnInit, OnDestroy {
   uploads: (SurveyUpload & { progress: number; videoName: string })[] = [];
   isModalOpen: boolean = false;
   selectedManifest: GeminiAnalyzedItem[] | null = null;
+  isLoadingUploads: boolean = false;
+  isLoadingManifest: boolean = false;
+  customFileName: string = ''; // New property for custom file name
   private pollingSubscription: Subscription | undefined;
-  private uploadsToPoll: string[] = []; // Track uploadIds that need polling
+  private uploadsToPoll: string[] = [];
   private readonly API_BASE_URL = 'http://localhost:5256/api';
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService,
+    private notificationService: NotificationService
+  ) {}
 
   ngOnInit() {
     console.log('PartnerDashboardComponent: ngOnInit called.');
@@ -36,6 +45,7 @@ export class PartnerDashboardComponent implements OnInit, OnDestroy {
   logout() {
     console.log('PartnerDashboardComponent: Logging out...');
     this.authService.logout();
+    this.notificationService.showInfo('You have been logged out.');
   }
 
   private getHeaders(forFileUpload: boolean = false): HttpHeaders {
@@ -52,16 +62,19 @@ export class PartnerDashboardComponent implements OnInit, OnDestroy {
 
   fetchUploads() {
     console.log('PartnerDashboardComponent: Fetching uploads...');
+    this.isLoadingUploads = true;
     this.http.get<SurveyUpload[]>(`${this.API_BASE_URL}/uploads/user`, { headers: this.getHeaders() })
       .pipe(
         catchError((error) => {
           console.error('PartnerDashboardComponent: Error fetching uploads:', error);
-          return of([]); // Return an empty array on error
+          this.notificationService.showError('Failed to fetch uploads. Please try again.');
+          this.isLoadingUploads = false;
+          return of([]);
         })
       )
       .subscribe((apiUploads) => {
         console.log('PartnerDashboardComponent: Uploads fetched:', apiUploads);
-        this.uploadsToPoll = []; // Clear previous list
+        this.uploadsToPoll = [];
         this.uploads = apiUploads.map(apiUpload => {
           const existingUpload = this.uploads.find(u => u.uploadId === apiUpload.uploadId);
 
@@ -78,6 +91,7 @@ export class PartnerDashboardComponent implements OnInit, OnDestroy {
             videoName: existingUpload?.videoName || `Video_${shortId}.mp4`
           };
         });
+        this.isLoadingUploads = false;
       });
   }
 
@@ -87,24 +101,25 @@ export class PartnerDashboardComponent implements OnInit, OnDestroy {
       .pipe(
         startWith(0), // Trigger immediately
         filter(() => this.uploadsToPoll.length > 0), // Only poll if there are uploads to check
-        concatMap(() => { // Use concatMap to process polls sequentially
+        concatMap(() => {
           const pollRequests = this.uploadsToPoll.map(uploadId =>
             this.pollSingleUploadStatus(uploadId).pipe(
               catchError(error => {
                 console.error(`Error polling status for ${uploadId}:`, error);
-                return of(null); // Continue with other polls even if one fails
+                this.notificationService.showError(`Failed to poll status for ${uploadId}.`);
+                return of(null);
               })
             )
           );
           return pollRequests.length > 0 ? combineLatest(pollRequests) : of([]);
         }),
         tap(() => {
-          // After polling, re-evaluate uploadsToPoll
           this.uploadsToPoll = this.uploads.filter(u => u.status === 'Pending' || u.status === 'Processing').map(u => u.uploadId);
         }),
-        takeWhile(() => this.uploadsToPoll.length > 0, true), // Continue while there are pending/processing uploads
+        // Removed takeWhile to ensure continuous polling
         catchError((error) => {
           console.error('PartnerDashboardComponent: Error during polling:', error);
+          this.notificationService.showError('Error during polling for uploads.');
           return of([]);
         })
       )
@@ -124,15 +139,15 @@ export class PartnerDashboardComponent implements OnInit, OnDestroy {
               localUpload.message = apiUpload.message;
               if (apiUpload.status === 'Completed' || apiUpload.status === 'Failed') {
                 localUpload.progress = 100;
-                // Remove from uploadsToPoll if status is final
                 this.uploadsToPoll = this.uploadsToPoll.filter(id => id !== uploadId);
+                this.notificationService.showInfo(`Upload ${apiUpload.uploadId.substring(0, 8)}... status: ${apiUpload.status}`);
               }
             }
           }
         }),
         catchError(error => {
           console.error(`Error fetching status for ${uploadId}:`, error);
-          // If polling fails, keep it in the list for retry, or handle as failed
+          this.notificationService.showError(`Failed to get status for upload ${uploadId.substring(0, 8)}...`);
           return of(null);
         })
       );
@@ -160,12 +175,11 @@ export class PartnerDashboardComponent implements OnInit, OnDestroy {
 
       const formData = new FormData();
       formData.append('videoFile', file, file.name);
-      formData.append('customName', ''); // As per API spec
+      formData.append('customName', this.customFileName || ''); // Use customFileName or empty string
 
-      // Add a temporary entry to the UI immediately
       const tempUpload: (SurveyUpload & { progress: number; videoName: string }) = {
-        uploadId: 'temp-' + Math.random().toString(36).substring(2, 15), // Temporary client-side ID
-        videoName: file.name,
+        uploadId: 'temp-' + Math.random().toString(36).substring(2, 15),
+        videoName: this.customFileName || file.name, // Use customFileName if provided
         createdTimestamp: new Date().toISOString(),
         status: 'Pending',
         progress: 0,
@@ -174,9 +188,9 @@ export class PartnerDashboardComponent implements OnInit, OnDestroy {
       this.uploads.unshift(tempUpload);
 
       this.http.post<UploadStatusResponse>(`${this.API_BASE_URL}/survey/upload`, formData, {
-        headers: this.getHeaders(true), // Indicate for file upload
-        reportProgress: true, // Enable progress tracking
-        observe: 'events' // Observe all events for progress
+        headers: this.getHeaders(true),
+        reportProgress: true,
+        observe: 'events'
       })
       .subscribe({
         next: (event: HttpEvent<UploadStatusResponse>) => {
@@ -187,24 +201,22 @@ export class PartnerDashboardComponent implements OnInit, OnDestroy {
           } else if (event.type === HttpEventType.Response) {
             const apiResponse = event.body;
             if (apiResponse) {
-              // Find the temporary upload and update it with real API data
               const index = this.uploads.findIndex(u => u.uploadId === tempUpload.uploadId);
               if (index > -1) {
                 this.uploads[index] = {
                   ...this.uploads[index],
                   uploadId: apiResponse.uploadId,
                   status: apiResponse.status,
-                  message: apiResponse.message ?? null, // Handle undefined message
-                  progress: 100 // Assuming 100% once response is received
+                  message: apiResponse.message ?? null,
+                  progress: 100
                 };
-                // Add to uploadsToPoll if it's not a final status
                 if (apiResponse.status === 'Pending' || apiResponse.status === 'Processing') {
                   this.uploadsToPoll.push(apiResponse.uploadId);
                 }
+                this.notificationService.showSuccess(`Upload of ${file.name} initiated.`);
                 console.log(`Upload complete for ${file.name}. API Response:`, apiResponse);
               }
             }
-            // No need to call fetchUploads here, polling will pick it up
           }
         },
         error: (error) => {
@@ -217,12 +229,13 @@ export class PartnerDashboardComponent implements OnInit, OnDestroy {
               message: `Upload failed: ${error.message || 'Unknown error'}`,
               progress: 100
             };
-            // Remove from uploadsToPoll if it failed
             this.uploadsToPoll = this.uploadsToPoll.filter(id => id !== tempUpload.uploadId);
+            this.notificationService.showError(`Failed to upload ${file.name}: ${error.message || 'Unknown error'}`);
           }
         }
       });
     });
+    this.customFileName = ''; // Clear custom file name after upload
   }
 
   getStatusClass(status: string): string {
@@ -242,11 +255,14 @@ export class PartnerDashboardComponent implements OnInit, OnDestroy {
 
   openDigitalManifest(uploadId: string) {
     console.log('PartnerDashboardComponent: Opening digital manifest for uploadId:', uploadId);
+    this.isLoadingManifest = true;
     this.http.get<GeminiAnalyzedItem[]>(`${this.API_BASE_URL}/uploads/${uploadId}/analysis`, { headers: this.getHeaders() })
       .pipe(
         catchError((error) => {
           console.error(`PartnerDashboardComponent: Error fetching manifest for ${uploadId}:`, error);
-          return of(null); // Return null on error
+          this.notificationService.showError(`Failed to fetch digital manifest for ${uploadId.substring(0, 8)}...`);
+          this.isLoadingManifest = false;
+          return of(null);
         })
       )
       .subscribe((manifest) => {
@@ -255,6 +271,7 @@ export class PartnerDashboardComponent implements OnInit, OnDestroy {
           this.isModalOpen = true;
           console.log('PartnerDashboardComponent: Manifest data loaded and modal opened.');
         }
+        this.isLoadingManifest = false;
       });
   }
 

@@ -1,0 +1,6 @@
+<div *ngIf="currentNotification" class="notification-container" [ngClass]="currentNotification.type">
+  <div class="notification-content">
+    <span>{{ currentNotification.message }}</span>
+    <button class="close-button" (click)="clearNotification()">×</button>
+  </div>
+</div>

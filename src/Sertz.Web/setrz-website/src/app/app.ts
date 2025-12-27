@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Header } from './components/header/header';
 import { Footer } from './components/footer/footer';
-import { CommonModule } from '@angular/common'; // Keep CommonModule for other potential uses
+import { CommonModule } from '@angular/common';
+import { NotificationComponent } from './partner/components/notification/notification.component'; // Import NotificationComponent
 
 @Component({
   selector: 'app-root',
@@ -11,7 +12,8 @@ import { CommonModule } from '@angular/common'; // Keep CommonModule for other p
     RouterOutlet,
     Header,
     Footer,
-    CommonModule
+    CommonModule,
+    NotificationComponent // Add NotificationComponent here
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss'

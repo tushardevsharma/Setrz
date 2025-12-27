@@ -42,10 +42,6 @@
         </div>
       </div>
 
-      <div *ngIf="errorMessage" class="alert alert-danger">
-        {{ errorMessage }}
-      </div>
-
       <button type="submit" class="login-button" [disabled]="loginForm.invalid || isLoading">
         <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
         Login
