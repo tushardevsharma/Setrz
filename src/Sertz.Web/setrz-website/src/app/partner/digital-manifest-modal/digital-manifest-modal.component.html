@@ -1,5 +1,12 @@
 <div class="modal-overlay" (click)="onClose()">
   <div class="modal-content" (click)="$event.stopPropagation()">
+    <div *ngIf="isLoading" class="modal-loading-overlay">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading manifest...</span>
+      </div>
+      <p>Loading manifest...</p>
+    </div>
+
     <div class="modal-header">
       <h2>Digital Manifest</h2>
       <button class="close-button" (click)="onClose()">×</button>

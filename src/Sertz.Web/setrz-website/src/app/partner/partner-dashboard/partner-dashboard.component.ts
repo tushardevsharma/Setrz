@@ -24,7 +24,7 @@ export class PartnerDashboardComponent implements OnInit, OnDestroy {
   customFileName: string = ''; // New property for custom file name
   private pollingSubscription: Subscription | undefined;
   private uploadsToPoll: string[] = [];
-  private readonly API_BASE_URL = 'http://localhost:5256/api';
+  private readonly API_BASE_URL = 'https://tk3mh6lkmdnyornb6bhbhb6wru0brckv.lambda-url.ap-south-1.on.aws/api';
 
   constructor(
     private http: HttpClient,

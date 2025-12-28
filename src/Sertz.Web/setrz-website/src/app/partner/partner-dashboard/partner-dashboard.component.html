@@ -91,12 +91,7 @@
 <app-digital-manifest-modal
   *ngIf="isModalOpen"
   [manifestData]="selectedManifest"
+  [isLoading]="isLoadingManifest"
   (closeModal)="closeDigitalManifest()"
 >
-  <div *ngIf="isLoadingManifest" class="modal-loading-overlay">
-    <div class="spinner-border text-primary" role="status">
-      <span class="visually-hidden">Loading manifest...</span>
-    </div>
-    <p>Loading manifest...</p>
-  </div>
 </app-digital-manifest-modal>

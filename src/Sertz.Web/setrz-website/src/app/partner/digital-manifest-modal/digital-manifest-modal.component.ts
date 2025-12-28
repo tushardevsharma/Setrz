@@ -11,6 +11,7 @@ import { GeminiAnalyzedItem, GeminiLogistics, GeminiPackagingLayer } from '../sh
 })
 export class DigitalManifestModalComponent {
   @Input() manifestData: GeminiAnalyzedItem[] | null = null;
+  @Input() isLoading: boolean = false;
   @Output() closeModal = new EventEmitter<void>();
 
   getLogisticsTags(logistics: GeminiLogistics): string[] {
