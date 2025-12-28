@@ -88,7 +88,7 @@ export class PartnerDashboardComponent implements OnInit, OnDestroy {
           return {
             ...apiUpload,
             progress: existingUpload?.progress || (apiUpload.status === 'Completed' || apiUpload.status === 'Failed' ? 100 : 0),
-            videoName: existingUpload?.videoName || `Video_${shortId}.mp4`
+            videoName: apiUpload.fileName || existingUpload?.videoName || `Video_${shortId}.mp4`
           };
         });
         this.isLoadingUploads = false;

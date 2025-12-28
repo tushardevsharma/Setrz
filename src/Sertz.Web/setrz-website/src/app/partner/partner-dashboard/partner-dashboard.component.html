@@ -54,7 +54,7 @@
       <ng-container *ngIf="!isLoadingUploads">
         <div class="upload-item-card" *ngFor="let upload of uploads">
           <div class="item-details">
-            <span class="video-name">{{ upload.videoName }}</span>
+            <span class="video-name">{{ upload.fileName || upload.videoName }}</span>
             <span class="timestamp">{{ upload.createdTimestamp | date: 'short' }}</span>
           </div>
           <div class="item-status">
