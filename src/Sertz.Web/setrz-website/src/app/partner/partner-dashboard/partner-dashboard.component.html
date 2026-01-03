@@ -12,34 +12,62 @@
   <main class="dashboard-main">
     <h2>Video Survey Upload</h2>
 
-    <!-- Custom File Name Input -->
-    <div class="form-group custom-file-name-input">
-      <label for="customFileName">Custom File Name (Optional)</label>
-      <input
-        id="customFileName"
-        type="text"
-        [(ngModel)]="customFileName"
-        placeholder="Enter a custom name for your video"
-      />
-    </div>
-
     <!-- Upload Area -->
-    <div
-      class="upload-area"
-      (dragover)="$event.preventDefault()"
-      (drop)="onFileDropped($event)"
-      (click)="fileInput.click()"
-    >
+    <div class="upload-area" (click)="fileInput.click()">
       <input
         type="file"
         #fileInput
         (change)="onFileSelected($event)"
-        multiple
         hidden
-        accept="video/*"
+        accept=".mp4"
       />
-      <p>Drag and drop your video surveys here, or click to select files.</p>
-      <p class="small-text">Supported formats: MP4, MOV, AVI</p>
+      <p>Click to select a video file</p>
+      <p class="small-text">Only .mp4 files are supported</p>
+    </div>
+
+    <!-- New Upload Preview and Confirmation Section -->
+    <div *ngIf="selectedFile" class="upload-preview-container">
+      <h4 class="preview-header">Upload Confirmation</h4>
+      <div class="preview-content">
+        <div class="video-preview">
+          <video [src]="filePreviewUrl" controls></video>
+        </div>
+        <div class="upload-form">
+          <div class="form-group">
+            <label for="customFileName">File Name</label>
+            <input
+              id="customFileName"
+              type="text"
+              [(ngModel)]="customFileName"
+              placeholder="Enter a custom name for your video"
+              [disabled]="isUploading"
+            />
+          </div>
+          <div class="upload-actions">
+            <button
+              class="action-button primary-button"
+              (click)="onUpload()"
+              [disabled]="isUploading || !customFileName"
+            >
+              {{ isUploading ? 'Uploading...' : 'Confirm & Upload' }}
+            </button>
+            <button
+              class="action-button cancel-button"
+              (click)="cancelSelection()"
+              [disabled]="isUploading"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- Progress Bar and Status -->
+      <div *ngIf="isUploading" class="upload-progress-section">
+        <p class="status-message">{{ uploadStatusMessage }}</p>
+        <div class="progress-bar-container">
+          <div class="progress-bar" [style.width.%]="uploadProgress"></div>
+        </div>
+      </div>
     </div>
 
     <!-- Survey List -->
@@ -76,6 +104,7 @@
             <button
               *ngIf="upload.status === 'Failed'"
               class="action-button retry-button"
+              (click)="retryUpload(upload.uploadId)"
             >
               Retry
             </button>
