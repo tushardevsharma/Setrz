@@ -30,7 +30,9 @@
 
           <div class="grid-section">
             <h4>Packaging</h4>
-            <div *ngFor="let layer of item.packaging_plan" class="packaging-layer">
+            <div *ngFor="let layer of sortPackagingPlan(item.packaging_plan)"
+                 class="packaging-layer">
+              <h4> {{ layer.layer_order }} </h4>
               <p>{{ layer.primary_material_type }}: {{ layer.quantity_estimate }} {{ layer.unit }}</p>
               <p *ngIf="layer.packed_volume_m3">Volume: {{ layer.packed_volume_m3 }} m³</p>
             </div>

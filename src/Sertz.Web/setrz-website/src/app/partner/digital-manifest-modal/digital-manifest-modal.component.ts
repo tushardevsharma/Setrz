@@ -16,19 +16,15 @@ export class DigitalManifestModalComponent {
 
   getLogisticsTags(logistics: GeminiLogistics): string[] {
     const tags: string[] = [];
-    if (logistics.fragility === 'High') {
-      tags.push('Fragile');
-    }
-    if (!logistics.is_stackable) {
-      tags.push('Stackable: No');
-    }
-    if (logistics.requires_disassembly) {
-      tags.push('Disassemble: Yes');
-    }
-    if (logistics.handling_priority && logistics.handling_priority !== 'Standard') {
-      tags.push(logistics.handling_priority);
-    }
+    tags.push(`Fragility: ${logistics.fragility}`);
+    tags.push(`Stackable: ${logistics.is_stackable ? 'Yes' : 'No'}`);
+    tags.push(`Disassembly: ${logistics.requires_disassembly ? 'Yes' : 'No'}`);
+    tags.push(`Priority: ${logistics.handling_priority}`);
     return tags;
+  }
+
+  sortPackagingPlan(packagingPlan: GeminiPackagingLayer[]): GeminiPackagingLayer[] {
+    return packagingPlan.sort((a, b) => a.layer_order - b.layer_order);
   }
 
   onClose() {
