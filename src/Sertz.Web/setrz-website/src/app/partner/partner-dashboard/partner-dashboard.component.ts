@@ -53,6 +53,8 @@ export class PartnerDashboardComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.fetchUploads();
     this.startPolling();
+    console.log('Environment Production:', environment.production);
+    console.log('Environment Backend API URL:', environment.backendApiUrl);
   }
 
   ngOnDestroy() {
