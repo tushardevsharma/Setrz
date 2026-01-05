@@ -12,17 +12,32 @@
   <main class="dashboard-main">
     <h2>Video Survey Upload</h2>
 
-    <!-- Upload Area -->
-    <div class="upload-area" (click)="fileInput.click()">
-      <input
-        type="file"
-        #fileInput
-        (change)="onFileSelected($event)"
-        hidden
-        accept=".mp4"
-      />
-      <p>Click to select a video file</p>
-      <p class="small-text">Only .mp4 files are supported</p>
+    <!-- Upload Options Area -->
+    <div class="upload-options-area">
+      <div class="upload-option" (click)="fileUploadInput.click()">
+        <input
+          type="file"
+          #fileUploadInput
+          (change)="onFileSelected($event)"
+          hidden
+          accept="video/*"
+        />
+        <p>Upload a video file</p>
+        <p class="small-text">Select an existing video from your device.</p>
+      </div>
+
+      <div class="upload-option" (click)="cameraInput.click()">
+        <input
+          type="file"
+          #cameraInput
+          (change)="onFileSelected($event)"
+          hidden
+          accept="video/*"
+          capture="environment"
+        />
+        <p>Open Camera</p>
+        <p class="small-text">Record a new video directly.</p>
+      </div>
     </div>
 
     <!-- New Upload Preview and Confirmation Section -->

@@ -107,6 +107,48 @@
   }
 }
 
+.upload-options-area {
+  display: flex;
+  gap: 20px; /* Space between the two options */
+  margin-bottom: 30px;
+  flex-wrap: wrap; /* Allow options to wrap on smaller screens */
+  justify-content: center; /* Center the options */
+
+  .upload-option {
+    flex: 1; /* Allow options to grow and shrink */
+    min-width: 280px; /* Minimum width for each option */
+    border: 2px dashed #cccccc;
+    border-radius: 8px;
+    padding: 30px;
+    text-align: center;
+    cursor: pointer;
+    background-color: #ffffff;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+      border-color: #174D3B; /* Primary color */
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    p {
+      margin: 0;
+      color: #555;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .small-text {
+      font-size: 14px;
+      color: #888;
+      margin-top: 5px;
+    }
+  }
+}
+
 /* New Upload Preview Styles */
 .upload-preview-container {
   background-color: #ffffff;

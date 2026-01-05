@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpHeaders, HttpEventType } from '@angular/common/http';
@@ -20,6 +20,8 @@ import { environment } from '../../../environments/environment';
   providers: [UploadService] // Provide UploadService here
 })
 export class PartnerDashboardComponent implements OnInit, OnDestroy {
+  @ViewChild('fileUploadInput') fileUploadInput!: ElementRef;
+  @ViewChild('cameraInput') cameraInput!: ElementRef;
   // Existing properties
   uploads: (SurveyUpload & { progress: number; videoName: string })[] = [];
   isModalOpen: boolean = false;
@@ -29,6 +31,7 @@ export class PartnerDashboardComponent implements OnInit, OnDestroy {
   private pollingSubscription: Subscription | undefined;
   private uploadsToPoll: string[] = [];
   private readonly API_BASE_URL = environment.backendApiUrl;
+  private readonly MAX_FILE_SIZE_MB = 20; // Max upload limit set to 20MB
 
   // New properties for the upload flow
   selectedFile: File | null = null;
@@ -79,6 +82,14 @@ export class PartnerDashboardComponent implements OnInit, OnDestroy {
 
       if (file.type !== 'video/mp4') {
         this.notificationService.showError('Invalid file type. Only .mp4 files are accepted.');
+        this.clearFileInput(input);
+        return;
+      }
+
+      // Validate file size
+      const maxSizeBytes = this.MAX_FILE_SIZE_MB * 1024 * 1024;
+      if (file.size > maxSizeBytes) {
+        this.notificationService.showError(`File size exceeds the maximum limit of ${this.MAX_FILE_SIZE_MB}MB.`);
         this.clearFileInput(input);
         return;
       }
