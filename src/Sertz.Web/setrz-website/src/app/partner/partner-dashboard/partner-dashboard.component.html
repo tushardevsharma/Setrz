@@ -23,7 +23,7 @@
           accept="video/*"
         />
         <p>Upload a video file</p>
-        <p class="small-text">Select an existing video from your device.</p>
+        <p class="small-text">Only small files less than 20MB are supported</p>
       </div>
 
       <div class="upload-option" (click)="cameraInput.click()">
@@ -35,8 +35,8 @@
           accept="video/*"
           capture="environment"
         />
-        <p>Open Camera</p>
-        <p class="small-text">Record a new video directly.</p>
+        <p>Record directly</p>
+        <p class="small-text">Set your camera settings to a lower resolution (30 FPS, 480p-720p)</p>
       </div>
     </div>
 

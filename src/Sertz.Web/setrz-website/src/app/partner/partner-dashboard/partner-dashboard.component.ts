@@ -82,8 +82,8 @@ export class PartnerDashboardComponent implements OnInit, OnDestroy {
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
 
-      if (file.type !== 'video/mp4') {
-        this.notificationService.showError('Invalid file type. Only .mp4 files are accepted.');
+      if (file.type !== 'video/mp4' && file.type !== 'video/quicktime') {
+        this.notificationService.showError('Invalid file type. Only .mp4 and .mov files are accepted.');
         this.clearFileInput(input);
         return;
       }
