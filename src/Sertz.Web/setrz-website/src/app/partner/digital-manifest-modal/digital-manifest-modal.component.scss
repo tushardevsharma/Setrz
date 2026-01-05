@@ -1,3 +1,5 @@
+@use "sass:color";
+
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -125,10 +127,10 @@
       position: relative; /* Keep relative for z-index if needed later, but not for stacking */
 
       &:nth-child(even) {
-        background-color: mix(white, $secondary-color, 90%);
+        background-color: color.mix(white, $secondary-color, 90%);
       }
       &:nth-child(odd) {
-        background-color: mix(white, $secondary-color, 98%);
+        background-color: color.mix(white, $secondary-color, 98%);
       }
     
       p {

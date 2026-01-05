@@ -1,3 +1,5 @@
+@use "sass:color";
+
 .auth-container {
   display: flex;
   justify-content: center;
@@ -79,7 +81,7 @@ h2 {
   width: 100%;
 
   &:hover:not(:disabled) {
-    background-color: darken(#174D3B, 10%);
+    background-color: color.adjust(#174D3B, $lightness: -10%);
   }
 
   &:disabled {
