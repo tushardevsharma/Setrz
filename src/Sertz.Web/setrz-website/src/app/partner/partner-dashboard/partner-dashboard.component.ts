@@ -226,7 +226,7 @@ export class PartnerDashboardComponent implements OnInit, OnDestroy {
         this.uploads = apiUploads.map(apiUpload => {
           const id = apiUpload.uploadId;
           const shortId = id.length > 8 ? `${id.slice(0, 4)}...${id.slice(-4)}` : id;
-          if (apiUpload.status === 'Pending' || apiUpload.status === 'Processing') {
+          if (apiUpload.status === 'Pending' || apiUpload.status === 'Processing' || apiUpload.status === 'Queued') {
             this.uploadsToPoll.push(apiUpload.uploadId);
           }
           return {
@@ -274,6 +274,7 @@ export class PartnerDashboardComponent implements OnInit, OnDestroy {
     switch (status) {
       case 'Pending': return 'status-pending';
       case 'Processing': return 'status-processing';
+      case 'Queued': return 'status-queued';
       case 'Completed': return 'status-completed';
       case 'Failed': return 'status-failed';
       default: return '';

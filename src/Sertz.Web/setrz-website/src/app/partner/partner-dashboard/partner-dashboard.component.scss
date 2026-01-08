@@ -343,6 +343,9 @@
   .status-processing {
     background-color: #C15B28; /* Accent color */
   }
+  .status-queued {
+    background-color: #007bff; /* Blue for queued status */
+  }
   .status-completed {
     background-color: #174D3B; /* Primary color */
   }
@@ -489,4 +492,16 @@
   clip: rect(0, 0, 0, 0) !important;
   white-space: nowrap !important;
   border: 0 !important;
+}
+
+.inline-spinner {
+  display: inline-block;
+  width: 0.8em; /* Smaller size relative to font-size */
+  height: 0.8em;
+  vertical-align: -0.1em; /* Adjust alignment with text */
+  border: 0.15em solid currentColor; /* Thinner border */
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: .75s linear infinite spinner-border;
+  margin-left: 0.5em; /* Small margin to separate from text */
 }

@@ -80,7 +80,7 @@
       <div *ngIf="isUploading" class="upload-progress-section">
         <p class="status-message">
           {{ uploadStatusMessage }}
-          <span class="spinner-border spinner-border-sm text-primary" role="status" aria-hidden="true"></span>
+          <span class="inline-spinner text-primary" role="status" aria-hidden="true"></span>
         </p>
       </div>
     </div>
@@ -101,11 +101,15 @@
             <span class="timestamp">{{ upload.createdTimestamp | date: 'short' }}</span>
           </div>
           <div class="item-status">
-            <span class="status-badge" [ngClass]="getStatusClass(upload.status)">
+            <span
+              *ngIf="upload.status !== 'Completed'"
+              class="status-badge"
+              [ngClass]="getStatusClass(upload.status)"
+            >
               {{ upload.status }}
               <span
-                *ngIf="upload.status === 'Pending' || upload.status === 'Processing'"
-                class="spinner-border spinner-border-sm text-primary"
+                *ngIf="upload.status === 'Pending' || upload.status === 'Processing' || upload.status === 'Queued'"
+                class="inline-spinner text-primary"
                 role="status"
                 aria-hidden="true"
               ></span>

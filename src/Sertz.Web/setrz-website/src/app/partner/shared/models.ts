@@ -34,7 +34,7 @@ export interface GeminiAnalyzedItem {
 
 export interface SurveyUpload {
   uploadId: string;
-  status: 'Pending' | 'Processing' | 'Completed' | 'Failed';
+  status: 'Pending' | 'Processing' | 'Completed' | 'Failed' | 'Queued';
   message: string | null;
   createdTimestamp: string;
   fileName?: string;
@@ -42,6 +42,6 @@ export interface SurveyUpload {
 
 export interface UploadStatusResponse {
   uploadId: string;
-  status: 'Pending' | 'Processing' | 'Completed' | 'Failed';
+  status: 'Pending' | 'Processing' | 'Completed' | 'Failed' | 'Queued';
   message?: string | null;
 }
