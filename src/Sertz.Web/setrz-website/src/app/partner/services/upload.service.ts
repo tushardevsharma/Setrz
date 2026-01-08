@@ -34,8 +34,8 @@ export class UploadService {
     });
   }
 
-  getPresignedUrl(fileName: string): Observable<PresignedUrlResponse> {
-    const body = { fileName };
+  getPresignedUrl(fileName: string, contentType: string): Observable<PresignedUrlResponse> {
+    const body = { fileName, contentType };
     return this.http.post<PresignedUrlResponse>(`${this.API_BASE_URL}/survey/presigned-url`, body, { headers: this.getHeaders() });
   }
 

@@ -82,7 +82,7 @@ export class PartnerDashboardComponent implements OnInit, OnDestroy {
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
 
-      if (file.type !== 'video/mp4') {
+      if (file.type !== 'video/mp4' && file.type !== 'video/quicktime') {
         this.notificationService.showError('Invalid file type. Only .mp4 files are accepted.');
         this.clearFileInput(input);
         return;
@@ -153,9 +153,14 @@ export class PartnerDashboardComponent implements OnInit, OnDestroy {
     this.uploadProgress = 0;
     this.uploadStatusMessage = 'Requesting upload URL...';
 
-    const finalFileName = this.customFileName.endsWith('.mp4') ? this.customFileName : `${this.customFileName}.mp4`;
+    let finalFileName = this.customFileName;
+    if (!this.customFileName.includes('.')) {
+      // Append extension if not present
+      const fileExtension = this.selectedFile.type === 'video/quicktime' ? '.mov' : '.mp4';
+      finalFileName = `${this.customFileName}${fileExtension}`;
+    }
 
-    this.uploadSubscription = this.uploadService.getPresignedUrl(finalFileName).pipe(
+    this.uploadSubscription = this.uploadService.getPresignedUrl(finalFileName, this.selectedFile.type).pipe(
       tap(() => {
         this.uploadStatusMessage = 'Uploading video to secure storage...';
       }),
