@@ -76,12 +76,12 @@
           </div>
         </div>
       </div>
-      <!-- Progress Bar and Status -->
+      <!-- Upload Status with Spinner -->
       <div *ngIf="isUploading" class="upload-progress-section">
-        <p class="status-message">{{ uploadStatusMessage }}</p>
-        <div class="progress-bar-container">
-          <div class="progress-bar" [style.width.%]="uploadProgress"></div>
-        </div>
+        <p class="status-message">
+          {{ uploadStatusMessage }}
+          <span class="spinner-border spinner-border-sm text-primary" role="status" aria-hidden="true"></span>
+        </p>
       </div>
     </div>
 
@@ -103,10 +103,13 @@
           <div class="item-status">
             <span class="status-badge" [ngClass]="getStatusClass(upload.status)">
               {{ upload.status }}
+              <span
+                *ngIf="upload.status === 'Pending' || upload.status === 'Processing'"
+                class="spinner-border spinner-border-sm text-primary"
+                role="status"
+                aria-hidden="true"
+              ></span>
             </span>
-            <div class="progress-bar-container" *ngIf="upload.status === 'Pending' || upload.status === 'Processing'">
-              <div class="progress-bar" [style.width.%]="upload.progress"></div>
-            </div>
           </div>
           <div class="item-actions">
             <button
