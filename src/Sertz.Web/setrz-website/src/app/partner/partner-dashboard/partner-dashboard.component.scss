@@ -59,8 +59,21 @@
 
   h2 {
     color: #174D3B; /* Primary color */
-    margin-bottom: 25px;
+    margin-bottom: 10px; /* Reduced margin to bring description closer */
     text-align: center;
+  }
+
+  
+
+  .dashboard-description {
+    text-align: center;
+    color: #555;
+    margin-bottom: 25px; /* Space below description */
+    font-size: 1rem;
+    line-height: 1.5;
+    max-width: 600px; /* Limit width for readability */
+    margin-left: auto;
+    margin-right: auto;
   }
 }
 
