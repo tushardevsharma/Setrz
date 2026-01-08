@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "gh-deploy": "ng build --configuration production && npx angular-cli-ghpages --dir=dist/setrz-website/browser --no-silent"
+    "gh-deploy": "ng build --configuration production && npx angular-cli-ghpages --dir=dist/setrz-website/browser --no-silent --cname zeeroni.com"
   },
   "prettier": {
     "printWidth": 100,
