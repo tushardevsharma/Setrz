@@ -31,9 +31,9 @@ export class PartnerDashboardComponent implements OnInit, OnDestroy {
   private pollingSubscription: Subscription | undefined;
   private uploadsToPoll: string[] = [];
   private readonly API_BASE_URL = environment.backendApiUrl;
-  private readonly MAX_FILE_SIZE_MB = 20; // Max upload limit set to 20MB
 
   // New properties for the upload flow
+  readonly MAX_FILE_SIZE_MB = 40; // Max upload limit set to 20MB
   selectedFile: File | null = null;
   filePreviewUrl: SafeResourceUrl | null = null;
   customFileName: string = '';

@@ -23,7 +23,7 @@
           accept="video/*"
         />
         <p>Upload a video file</p>
-        <p class="small-text">Only small files less than 20MB are supported</p>
+        <p class="small-text">Only small files less than {{this.MAX_FILE_SIZE_MB}} are supported</p>
       </div>
 
       <div class="upload-option" (click)="cameraInput.click()">
