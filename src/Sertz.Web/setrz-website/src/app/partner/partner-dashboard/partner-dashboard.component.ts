@@ -275,7 +275,7 @@ export class PartnerDashboardComponent implements OnInit, OnDestroy {
       case 'Pending': return 'status-pending';
       case 'Processing': return 'status-processing';
       case 'Queued': return 'status-queued';
-      case 'Completed': return 'status-completed';
+      case 'Completed': return ''; // No status badge for completed, as per new requirement
       case 'Failed': return 'status-failed';
       default: return '';
     }
