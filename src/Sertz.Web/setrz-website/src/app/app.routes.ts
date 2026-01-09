@@ -7,7 +7,6 @@ import { PartnerComponent } from './partner/partner.component';
 export const routes: Routes = [
   { path: 'about-us', component: AboutUsComponent },
   { path: 'home', component: HomeComponent },
-  { path: 'partner', component: PartnerComponent },
   { path: 'privacy-policy', component: PrivacyPolicyComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', redirectTo: '/home' } // Wildcard route for any unmatched paths

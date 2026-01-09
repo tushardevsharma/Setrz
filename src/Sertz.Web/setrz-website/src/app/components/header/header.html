@@ -14,9 +14,6 @@
         <li class="nav-item">
           <a class="nav-link" routerLink="/about-us" [ngClass]="{'text-light': !isScrolled && isHomePage, 'text-dark': isScrolled || !isHomePage}" (click)="closeNavbar()">About Us</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" (click)="navigateTo(isHomePage ? '/home' : '/about-us', 'lead-form')" [ngClass]="{'text-light': !isScrolled && isHomePage, 'text-dark': isScrolled || !isHomePage}">Get a Free Consultation</a>
-        </li>
         <li class="nav-item" *ngIf="showLogoutButton">
           <button class="nav-link btn btn-link" (click)="logout()">Logout</button>
         </li>

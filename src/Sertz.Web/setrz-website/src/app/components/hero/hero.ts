@@ -10,7 +10,7 @@ import { Subscription, firstValueFrom } from 'rxjs';
 @Component({
   selector: 'app-hero',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './hero.html',
   styleUrl: './hero.scss',
 })
