@@ -19,7 +19,6 @@ import { TechJourney } from '../tech-journey/tech-journey';
     HowItWorks,
     Services,
     Guarantee,
-    LeadForm,
     ScrollAnimationDirective,
     TechJourney,
   ],

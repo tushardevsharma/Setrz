@@ -1,18 +1,26 @@
 import { Component, OnInit, ElementRef, ViewChild, AfterViewInit, OnDestroy, Output, EventEmitter } from '@angular/core';
- // Import CommonModule
+import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { FormsModule, NgForm } from '@angular/forms';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
+import { ScrollService } from '../../shared/services/scroll.service';
+import { Subscription, firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-hero',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, RouterLink, FormsModule],
   templateUrl: './hero.html',
   styleUrl: './hero.scss',
 })
-export class Hero implements OnInit, AfterViewInit, OnDestroy { // Implement OnDestroy
+export class Hero implements OnInit, AfterViewInit, OnDestroy {
   @Output() getConsultation = new EventEmitter<void>();
 
   @ViewChild('typewriterText') typewriterTextRef!: ElementRef;
   @ViewChild('typedCursor') typedCursorRef!: ElementRef;
+  @ViewChild('heroForm') heroForm!: NgForm;
+  @ViewChild('heroSection') heroSection!: ElementRef;
 
   private textArray: string[] = [
     "Experience the future of relocation.",
@@ -24,39 +32,67 @@ export class Hero implements OnInit, AfterViewInit, OnDestroy { // Implement OnD
   private textArrayIndex: number = 0;
   private typedText: string = "";
   private charIndex: number = 0;
-  private typingSpeed: number = 100; // Milliseconds per character
-  private deletingSpeed: number = 50; // Milliseconds per character for deleting
-  private pauseBetweenTexts: number = 1500; // Milliseconds pause after typing/deleting
+  private typingSpeed: number = 100;
+  private deletingSpeed: number = 50;
+  private pauseBetweenTexts: number = 1500;
   private isDeleting: boolean = false;
-  private typingTimeout: any; // To store timeout for typing/deleting
-  private cursorBlinkInterval: any; // To store interval for blinking
+  private typingTimeout: any;
+  private cursorBlinkInterval: any;
+  private scrollSubscription!: Subscription;
 
-  constructor() {}
+  formData = {
+    name: '',
+    phoneNumber: '',
+    desiredMoveOutDate: '',
+    moveSize: '',
+  };
+
+  todayDate: string;
+  maxMoveOutDate: string;
+  formSubmittedSuccessfully: boolean = false;
+  isSubmitting: boolean = false; // New flag for submission state
+
+  constructor(private http: HttpClient, private scrollService: ScrollService) {
+    const today = new Date();
+    this.todayDate = today.toISOString().split('T')[0];
+
+    const maxDate = new Date();
+    maxDate.setMonth(maxDate.getMonth() + 2);
+    this.maxMoveOutDate = maxDate.toISOString().split('T')[0];
+  }
 
   ngOnInit() {
-    // Initialization logic if any
+    this.scrollSubscription = this.scrollService.scrollToForm$.subscribe(() => {
+      if (this.heroSection) {
+        this.heroSection.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
   }
 
   ngAfterViewInit() {
-    // Start typing animation after a short delay
     this.typingTimeout = setTimeout(() => {
       this.handleTypeWriter();
     }, 500);
 
-    // Start blinking cursor
     this.blinkCursor();
   }
 
-  ngOnDestroy() { // Clear timeouts and intervals to prevent memory leaks
+  ngOnDestroy() {
     if (this.typingTimeout) {
       clearTimeout(this.typingTimeout);
     }
     if (this.cursorBlinkInterval) {
       clearInterval(this.cursorBlinkInterval);
     }
+    if (this.scrollSubscription) {
+      this.scrollSubscription.unsubscribe();
+    }
   }
 
   onGetConsultationClick(): void {
+    if (this.heroSection) {
+      this.heroSection.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
     this.getConsultation.emit();
   }
 
@@ -86,7 +122,7 @@ export class Hero implements OnInit, AfterViewInit, OnDestroy { // Implement OnD
     } else if (this.isDeleting && this.typedText === '') {
       this.isDeleting = false;
       this.textArrayIndex = (this.textArrayIndex + 1) % this.textArray.length;
-      currentSpeed = this.typingSpeed; // Pause before typing next text
+      currentSpeed = this.typingSpeed;
     }
 
     this.typingTimeout = setTimeout(this.handleTypeWriter, currentSpeed);
@@ -98,6 +134,68 @@ export class Hero implements OnInit, AfterViewInit, OnDestroy { // Implement OnD
         this.typedCursorRef.nativeElement.style.opacity =
           (this.typedCursorRef.nativeElement.style.opacity === '0' ? '1' : '0');
       }
-    }, 500); // Blink every 500ms
+    }, 500);
+  }
+
+  private getUserAgent(): string {
+    return navigator.userAgent;
+  }
+
+  private async getIpAddress(): Promise<string> {
+    try {
+      const response: any = await firstValueFrom(this.http.get('https://api.ipify.org?format=json'));
+      return response.ip;
+    } catch (error) {
+      console.error('Could not fetch IP address:', error);
+      return 'unknown';
+    }
+  }
+
+  async onSubmit(): Promise<void> {
+    if (this.heroForm.valid) {
+      this.isSubmitting = true; // Set submitting flag to true
+
+      const ipAddress = await this.getIpAddress();
+
+      const moveSizeForBackend = this.formData.moveSize.replace(/\s/g, '');
+      const payload = {
+        name: this.formData.name,
+        phoneNumber: this.formData.phoneNumber,
+        moveDetails: {
+          desiredMoveOutDate: this.formData.desiredMoveOutDate,
+          moveSize: moveSizeForBackend,
+        },
+        metadata: {
+          source: 'zeeroni_legacy_landing_page_v1',
+          formId: 'zeeroni_house_shifting_v1',
+          utmSource: 'google',
+          utmCampaign: 'house_shifting_india',
+          userAgent: this.getUserAgent(),
+          ipAddress: ipAddress,
+        },
+      };
+
+      const apiUrl = `${environment.backendApiUrl}/marketing/leads`;
+
+      this.http.post(apiUrl, payload).subscribe({
+        next: (response) => {
+          console.log('Form Submitted Successfully!', response);
+          this.formSubmittedSuccessfully = true;
+          this.heroForm.resetForm();
+          setTimeout(() => {
+            this.formSubmittedSuccessfully = false;
+          }, 5000);
+        },
+        error: (error: HttpErrorResponse) => {
+          console.error('Form Submission Error:', error);
+          // Optionally, show an error message to the user
+        },
+        complete: () => {
+          this.isSubmitting = false; // Reset submitting flag when complete (success or error)
+        }
+      });
+    } else {
+      console.log('Form is invalid');
+    }
   }
 }

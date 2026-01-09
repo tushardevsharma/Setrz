@@ -4,6 +4,8 @@
   background-size: cover;
   background-position: center;
   background-attachment: fixed; /* Parallax effect */
+  display: flex; /* Use flexbox for vertical alignment */
+  align-items: center; /* Center content vertically */
 }
 
 .typed-cursor {
@@ -15,4 +17,34 @@
   0% { opacity: 1; }
   50% { opacity: 0; }
   100% { opacity: 1; }
+}
+
+/* Form specific styling */
+.card {
+  background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white background */
+  border-radius: 10px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .hero-section {
+    height: auto; /* Adjust height for mobile */
+    padding: 80px 0; /* Add some padding */
+  }
+
+  .hero-section h1 {
+    font-size: 2.5rem; /* Smaller font size for mobile */
+  }
+
+  .hero-section p {
+    font-size: 1rem; /* Smaller font size for mobile */
+  }
+
+  /* For mobile, the form comes first (order-md-2 makes it second on medium screens and up) */
+  .col-12.order-md-2 {
+    order: 1;
+  }
+  .col-12.order-md-1 {
+    order: 2;
+  }
 }

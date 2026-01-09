@@ -1,7 +1,8 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter, withInMemoryScrolling } from '@angular/router';
-import { provideHttpClient } from '@angular/common/http'; // Import provideHttpClient
+import { provideHttpClient } from '@angular/common/http';
 import { routes } from './app.routes';
+import { FormsModule } from '@angular/forms'; // Import FormsModule
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -10,6 +11,7 @@ export const appConfig: ApplicationConfig = {
       routes,
       withInMemoryScrolling({ scrollPositionRestoration: 'enabled' })
     ),
-    provideHttpClient() // Add provideHttpClient here
+    provideHttpClient(),
+    FormsModule // Add FormsModule here
   ]
 };

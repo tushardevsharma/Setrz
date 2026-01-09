@@ -5,6 +5,7 @@ import { ViewportScroller } from '@angular/common';
 import { Subscription, combineLatest } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { AuthService } from '../../partner/services/auth.service'; // Import AuthService
+import { ScrollService } from '../../shared/services/scroll.service'; // Import ScrollService
 
 declare var bootstrap: any;
 
@@ -28,7 +29,8 @@ export class Header implements OnInit, OnDestroy {
     private router: Router,
     private scroller: ViewportScroller,
     private activatedRoute: ActivatedRoute,
-    private authService: AuthService // Inject AuthService
+    private authService: AuthService, // Inject AuthService
+    private scrollService: ScrollService // Inject ScrollService
   ) {}
 
   ngOnInit() {
@@ -76,14 +78,19 @@ export class Header implements OnInit, OnDestroy {
   }
 
   navigateTo(path: string, fragment?: string) {
-    this.router.navigate([path], { fragment: fragment }).then(() => {
-      if (fragment) {
-        setTimeout(() => {
-          this.scroller.scrollToAnchor(fragment);
-        }, 100);
-      }
+    if (path === '/home' && fragment === 'lead-form') {
+      this.scrollService.scrollToForm();
       this.closeNavbar();
-    });
+    } else {
+      this.router.navigate([path], { fragment: fragment }).then(() => {
+        if (fragment) {
+          setTimeout(() => {
+            this.scroller.scrollToAnchor(fragment);
+          }, 100);
+        }
+        this.closeNavbar();
+      });
+    }
   }
 
   logout() {
