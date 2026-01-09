@@ -19,6 +19,21 @@
     gtag('js', new Date());
 
     gtag('config', 'AW-17857668362');
+
+    function gtag_report_conversion(url) {
+      var callback = function () {
+        if (typeof(url) != 'undefined') {
+          window.location = url;
+        }
+      };
+      gtag('event', 'conversion', {
+          'send_to': 'AW-17857668362/-Fm2CP7MnN4bEIrKmcNC',
+          'value': 1.0,
+          'currency': 'INR',
+          'event_callback': callback
+      });
+      return false;
+    }
   </script>
   <!-- End Google Tag Manager -->
 </head>

@@ -7,10 +7,13 @@ import { environment } from '../../../environments/environment';
 import { ScrollService } from '../../shared/services/scroll.service';
 import { Subscription, firstValueFrom } from 'rxjs';
 
+// Declare gtag_report_conversion function globally
+declare function gtag_report_conversion(url?: string): boolean;
+
 @Component({
   selector: 'app-hero',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, RouterLink, FormsModule],
   templateUrl: './hero.html',
   styleUrl: './hero.scss',
 })
@@ -153,7 +156,7 @@ export class Hero implements OnInit, AfterViewInit, OnDestroy {
 
   async onSubmit(): Promise<void> {
     if (this.heroForm.valid) {
-      this.isSubmitting = true; // Set submitting flag to true
+      this.isSubmitting = true;
 
       const ipAddress = await this.getIpAddress();
 
@@ -180,6 +183,7 @@ export class Hero implements OnInit, AfterViewInit, OnDestroy {
       this.http.post(apiUrl, payload).subscribe({
         next: (response) => {
           console.log('Form Submitted Successfully!', response);
+          gtag_report_conversion(); // Call Google Ads conversion tracking
           this.formSubmittedSuccessfully = true;
           this.heroForm.resetForm();
           setTimeout(() => {
@@ -191,7 +195,7 @@ export class Hero implements OnInit, AfterViewInit, OnDestroy {
           // Optionally, show an error message to the user
         },
         complete: () => {
-          this.isSubmitting = false; // Reset submitting flag when complete (success or error)
+          this.isSubmitting = false;
         }
       });
     } else {

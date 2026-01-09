@@ -12,7 +12,7 @@
             </div>
             <div class="mb-3">
               <label for="phoneNumber" class="form-label">Phone Number</label>
-              <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" [(ngModel)]="formData.phoneNumber" pattern="[6-9]\d{9}" placeholder="e.g., 9876543210" required>
+              <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" [(ngModel)]="formData.phoneNumber" pattern="[6-9]\d{9}" maxlength="10" placeholder="e.g., 9876543210" required>
               <div *ngIf="heroForm.controls['phoneNumber']?.invalid && heroForm.controls['phoneNumber']?.touched" class="text-danger">
                 Please enter a valid 10-digit Indian phone number.
               </div>
