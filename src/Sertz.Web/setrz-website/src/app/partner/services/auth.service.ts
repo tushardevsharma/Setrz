@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, BehaviorSubject, from } from 'rxjs';
 import { map, catchError } from 'rxjs/operators'; // Import RxJS operators
-import { createClient, SupabaseClient, User } from '@supabase/supabase-js';
+import { createClient, SupabaseClient, User, AuthChangeEvent, Session } from '@supabase/supabase-js';
 import { environment } from '../../../environments/environment'; // Corrected path
 
 @Injectable({
@@ -32,7 +32,7 @@ export class AuthService {
 
     this.supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-    this.supabase.auth.onAuthStateChange((event, session) => {
+    this.supabase.auth.onAuthStateChange((event: AuthChangeEvent, session: Session | null) => {
       console.log('AuthService: Auth state change event:', event);
       console.log('AuthService: Session:', session);
       if (session) {
