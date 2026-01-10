@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterOutlet, Router, ActivatedRoute } from '@angular/router';
 import { Header } from './components/header/header';
 import { Footer } from './components/footer/footer';
 import { CommonModule } from '@angular/common';
@@ -20,4 +20,6 @@ import { NotificationComponent } from './partner/components/notification/notific
 })
 export class App {
   title = 'Zeeroni';
+
+  constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
 }

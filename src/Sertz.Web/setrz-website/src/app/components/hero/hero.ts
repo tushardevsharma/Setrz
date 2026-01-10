@@ -1,6 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild, AfterViewInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink, ActivatedRoute } from '@angular/router'; // Import ActivatedRoute
 import { FormsModule, NgForm } from '@angular/forms';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
@@ -9,6 +9,12 @@ import { Subscription, firstValueFrom } from 'rxjs';
 
 // Declare gtag_report_conversion function globally
 declare function gtag_report_conversion(url?: string): boolean;
+
+interface DeviceInfo {
+  isMobile: string;
+  platform: string;
+  browser?: string;
+}
 
 @Component({
   selector: 'app-hero',
@@ -55,7 +61,14 @@ export class Hero implements OnInit, AfterViewInit, OnDestroy {
   formSubmittedSuccessfully: boolean = false;
   isSubmitting: boolean = false; // New flag for submission state
 
-  constructor(private http: HttpClient, private scrollService: ScrollService) {
+  // Tracking parameters
+  private trackingParams: { [key: string]: string } = {};
+
+  constructor(
+    private http: HttpClient,
+    private scrollService: ScrollService,
+    private activatedRoute: ActivatedRoute // Inject ActivatedRoute
+  ) {
     const today = new Date();
     this.todayDate = today.toISOString().split('T')[0];
 
@@ -69,6 +82,12 @@ export class Hero implements OnInit, AfterViewInit, OnDestroy {
       if (this.heroSection) {
         this.heroSection.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
+    });
+
+    // Extract tracking parameters from URL
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.trackingParams['utmSource'] = params['utmSource'] || '';
+      this.trackingParams['utmCampaign'] = params['utmCampaign'] || '';
     });
   }
 
@@ -140,9 +159,23 @@ export class Hero implements OnInit, AfterViewInit, OnDestroy {
     }, 500);
   }
 
-  private getUserAgent(): string {
-    return navigator.userAgent;
+  private getDeviceAttributes(): DeviceInfo {
+  const nav = navigator as any;
+  
+  // Modern Browsers (Chrome, Edge)
+  if (nav.userAgentData) {
+    return {
+      isMobile: String(nav.userAgentData.mobile),
+      platform: nav.userAgentData.platform
+    };
   }
+
+  // Fallback (Safari, Firefox, Older Browsers)
+  return {
+    isMobile: String(/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)),
+    platform: navigator.platform // e.g., "Win32", "MacIntel"
+  };
+}
 
   private async getIpAddress(): Promise<string> {
     try {
@@ -169,12 +202,9 @@ export class Hero implements OnInit, AfterViewInit, OnDestroy {
           moveSize: moveSizeForBackend,
         },
         metadata: {
-          // source: 'zeeroni_legacy_landing_page_v1',
-          // formId: 'zeeroni_house_shifting_v1',
-          // utmSource: 'google',
-          // utmCampaign: 'house_shifting_india',
-          userAgent: this.getUserAgent(),
           ipAddress: ipAddress,
+          ...this.getDeviceAttributes(),
+          ...this.trackingParams, // Add tracking parameters here
         },
       };
 
