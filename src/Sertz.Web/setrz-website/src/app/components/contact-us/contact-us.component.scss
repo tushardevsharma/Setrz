@@ -1,0 +1,54 @@
+.contact-us-container {
+  margin-top: 80px; /* Push content down to avoid header overlap */
+  padding: 80px 20px;
+  font-family: -apple-system, BlinkMacMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  color: #333;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left; /* Align text to left within the container */
+  min-height: calc(200vh - 100px); /* Ensure content pushes footer down */
+}
+
+h1 {
+  font-size: 40px;
+  font-weight: 600;
+  margin-bottom: 40px;
+  color: var(--bs-primary); /* Primary color for header */
+  text-align: left;
+}
+
+h2 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: var(--bs-primary); /* Primary color for sub-headers */
+  text-align: left;
+}
+
+p {
+  font-size: 18px;
+  line-height: 1.6;
+  margin-bottom: 30px;
+  color: #555;
+  text-align: left;
+}
+
+.contact-info {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 30px;
+  margin-bottom: 40px;
+  text-align: left; /* Align text to left within the info block */
+}
+
+.contact-info p {
+  margin-bottom: 10px;
+  font-size: 1.1em;
+  color: #000000; /* Primary color for contact details */
+}
+
+.contact-info strong {
+  color: var(--bs-primary); /* Primary color for strong text */
+}

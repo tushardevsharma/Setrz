@@ -8,6 +8,8 @@ import { AuthService } from '../../partner/services/auth.service'; // Import Aut
 import { ScrollService } from '../../shared/services/scroll.service'; // Import ScrollService
 
 declare var bootstrap: any;
+declare var gtag: Function; // Declare gtag globally
+declare function gtag_report_conversion(url?: string): boolean; // Declare gtag_report_conversion globally
 
 @Component({
   selector: 'app-header',
@@ -97,6 +99,18 @@ export class Header implements OnInit, OnDestroy {
     this.authService.logout();
     this.router.navigate(['/partner']); // Redirect to partner login page after logout
     this.closeNavbar();
+  }
+
+  trackClickEvent(eventName: string) {
+    if (typeof gtag === 'function') {
+      gtag('event', eventName, {
+        'event_category': 'navigation',
+        'event_label': eventName
+      });
+      console.log(`Google Analytics event tracked: ${eventName}`);
+    } else {
+      console.warn('gtag function is not defined.');
+    }
   }
 
   closeNavbar() {
